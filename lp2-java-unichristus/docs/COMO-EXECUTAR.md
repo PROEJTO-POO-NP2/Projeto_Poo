@@ -80,7 +80,24 @@ spring.datasource.password=${DB_PASSWORD:postgres}
 > [!NOTE]
 > Por padrão, se você não configurar nenhuma variável, o projeto usará a base externa no IP `192.168.1.244` no schema `bd_rsc_poo` automaticamente.
 
-Se você precisar utilizar outro banco de dados (ex: rodando local no seu computador), siga o passo a passo abaixo para definir as variáveis no seu ambiente de desenvolvimento:
+Se você precisar utilizar outro banco de dados (ex: rodando local no seu computador), a forma mais simples e recomendada é através do arquivo **`.env`**, mas você também pode configurar diretamente na sua IDE ou SO:
+
+### 📄 Método 1: Usando arquivo `.env` (Mais Simples e Recomendado)
+O projeto possui suporte nativo a arquivos `.env` na raiz da pasta `lp2-java-unichristus`!
+1. Na pasta `lp2-java-unichristus`, você encontrará um arquivo modelo chamado **`.env.example`**.
+2. Faça uma cópia desse arquivo e renomeie-a para **`.env`**.
+3. Abra o arquivo `.env` e configure os valores do seu banco de dados:
+   ```env
+   DB_URL=jdbc:postgresql://localhost:5432/base_estudos?currentSchema=bd_rsc_poo
+   DB_USERNAME=postgres
+   DB_PASSWORD=sua_senha_aqui
+   ```
+4. Salve o arquivo. O Spring Boot carregará essas credenciais automaticamente ao iniciar!
+*(Nota: O arquivo `.env` já está adicionado ao `.gitignore` para que suas senhas locais nunca sejam enviadas acidentalmente para o GitHub!)*
+
+---
+
+### ⚙️ Método 2: Configurando via IDE ou Sistema Operacional
 
 ### 💻 Como configurar no VS Code (Recomendado)
 A melhor forma no VS Code é configurar o arquivo de inicialização para injetar as variáveis automaticamente ao rodar o projeto:
