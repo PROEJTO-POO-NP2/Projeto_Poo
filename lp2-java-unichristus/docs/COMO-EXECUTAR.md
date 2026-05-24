@@ -67,24 +67,65 @@ O projeto está configurado para utilizar o banco de dados **PostgreSQL**. Você
 
 ---
 
-## 🗄️ PASSO 4: Configurar as Credenciais no Projeto
+## 🗄️ PASSO 4: Configurar as Credenciais no Projeto (Variáveis de Ambiente)
 
-O Spring Boot precisa das informações de conexão do seu PostgreSQL para se conectar e criar a estrutura das tabelas automaticamente.
+O Spring Boot está parametrizado para ler as credenciais de banco de dados diretamente de **Variáveis de Ambiente**, oferecendo maior segurança e flexibilidade. O arquivo `application.properties` está configurado assim por padrão:
 
-1. **Abrir o arquivo de configurações:**
-   - Abra o arquivo localizado em `src/main/resources/application.properties`
+```properties
+spring.datasource.url=${DB_URL:jdbc:postgresql://192.168.1.244:5432/base_estudos?currentSchema=bd_rsc_poo}
+spring.datasource.username=${DB_USERNAME:postgres}
+spring.datasource.password=${DB_PASSWORD:postgres}
+```
 
-2. **Definir os dados do seu PostgreSQL:**
-   Substitua as configurações de conexão pelas credenciais do seu banco:
-   ```properties
-   spring.datasource.url=jdbc:postgresql://192.168.1.244:5432/base_estudos?currentSchema=bd_rsc_poo
-   spring.datasource.username=postgres
-   spring.datasource.password=postgres
-   spring.datasource.driver-class-name=org.postgresql.Driver
-   spring.jpa.properties.hibernate.default_schema=bd_rsc_poo
-   spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+> [!NOTE]
+> Por padrão, se você não configurar nenhuma variável, o projeto usará a base externa no IP `192.168.1.244` no schema `bd_rsc_poo` automaticamente.
+
+Se você precisar utilizar outro banco de dados (ex: rodando local no seu computador), siga o passo a passo abaixo para definir as variáveis no seu ambiente de desenvolvimento:
+
+### 💻 Como configurar no VS Code (Recomendado)
+A melhor forma no VS Code é configurar o arquivo de inicialização para injetar as variáveis automaticamente ao rodar o projeto:
+1. Crie uma pasta chamada `.vscode` na raiz do projeto (se não existir).
+2. Crie um arquivo chamado `launch.json` dentro dessa pasta com o seguinte conteúdo:
+   ```json
+   {
+       "version": "0.2.0",
+       "configurations": [
+           {
+               "type": "java",
+               "name": "ProjetoApplication",
+               "request": "launch",
+               "mainClass": "com.ProjetoExtensao.Projeto.ProjetoApplication",
+               "env": {
+                   "DB_URL": "jdbc:postgresql://localhost:5432/base_estudos?currentSchema=bd_rsc_poo",
+                   "DB_USERNAME": "postgres",
+                   "DB_PASSWORD": "sua_senha_aqui"
+               }
+           }
+       ]
+   }
    ```
-   *(Nota: Se o seu banco estiver na mesma máquina, use `localhost` no lugar de `192.168.1.244`)*
+3. Agora, ao executar o projeto pela aba "Run and Debug" do VS Code, ele conectará usando essas credenciais personalizadas.
+
+### ☕ Como configurar no IntelliJ IDEA
+1. No canto superior direito, clique na seta ao lado do botão Play (Run) do projeto e escolha **Edit Configurations...**
+2. No campo **Environment variables**, clique no ícone à direita e adicione:
+   * **`DB_URL`** = `jdbc:postgresql://localhost:5432/base_estudos?currentSchema=bd_rsc_poo`
+   * **`DB_USERNAME`** = `postgres`
+   * **`DB_PASSWORD`** = `sua_senha_aqui`
+3. Salve, aplique e execute o projeto.
+
+### 🖥️ Como configurar no Sistema Operacional (Windows)
+Se você for rodar o projeto direto pelo prompt de comando ou PowerShell:
+1. Abra o PowerShell na pasta do projeto e defina as variáveis temporárias antes de rodar:
+   ```powershell
+   $env:DB_URL="jdbc:postgresql://localhost:5432/base_estudos?currentSchema=bd_rsc_poo"
+   $env:DB_USERNAME="postgres"
+   $env:DB_PASSWORD="sua_senha_aqui"
+   ```
+2. Em seguida, execute a aplicação normalmente:
+   ```powershell
+   .\mvnw.cmd spring-boot:run
+   ```
 
 ✅ **Credenciais do banco configuradas com sucesso!**
 
