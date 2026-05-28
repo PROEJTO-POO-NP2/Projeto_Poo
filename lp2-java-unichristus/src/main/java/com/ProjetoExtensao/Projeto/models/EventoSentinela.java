@@ -7,6 +7,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
+/**
+ * Entidade que representa um Evento Sentinela registrado para um paciente.
+ *
+ * Eventos sentinelas são ocorrências adversas (quedas, lesões, infecções, etc.)
+ * que devem ser registradas para monitoramento e prevenção.
+ *
+ * @author José, Alisson, Esdras, Vini, Arthur
+ * @version 2.0
+ */
 @Entity
 @Table(name = "eventos_sentinelas")
 @NoArgsConstructor

@@ -92,7 +92,14 @@ public class TelaGeral extends JFrame {
         gridPanel.add(createDashboardButton("Família", "familia.png"));
         gridPanel.add(createDashboardButton("Documentos", "documentos.png"));
         gridPanel.add(btnEventos);
-        gridPanel.add(createDashboardButton("Prontuários", "prontuarios.png"));
+        
+        JButton btnProntuarios = createDashboardButton("Prontuários", "prontuarios.png");
+        btnProntuarios.addActionListener(e -> {
+            navigationService.abrirTelaProntuarios();
+            dispose();
+        });
+        gridPanel.add(btnProntuarios);
+
         gridPanel.add(btnConsultas);
         gridPanel.add(createDashboardButton("Vacinas", "vacinas.png"));
         gridPanel.add(createDashboardButton("Relatórios", "relatorios.png"));

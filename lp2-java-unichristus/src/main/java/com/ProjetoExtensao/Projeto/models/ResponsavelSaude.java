@@ -5,6 +5,18 @@ import lombok.*;
 
 import java.util.List;
 
+/**
+ * Entidade que representa um Profissional/Responsável de Saúde.
+ *
+ * Responsável por realizar consultas e atendimentos aos pacientes.
+ * Contém dados de autenticação (email/senha) para login no sistema.
+ *
+ * Nota: As senhas são armazenadas em texto plano por se tratar de
+ * um projeto acadêmico. Em produção, utilizar hash (BCrypt).
+ *
+ * @author José, Alisson, Esdras, Vini, Arthur
+ * @version 2.0
+ */
 @Entity
 @Table(name = "responsaveis_saude")
 @NoArgsConstructor

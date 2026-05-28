@@ -8,6 +8,16 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Entidade que representa um Paciente (idosa) no sistema.
+ *
+ * Contém dados pessoais como nome, CPF, data de nascimento,
+ * nome da mãe, cartão SUS e data de entrada na instituição.
+ * O campo {@code ativo} indica se o paciente está em acompanhamento.
+ *
+ * @author José, Alisson, Esdras, Vini, Arthur
+ * @version 2.0
+ */
 @Entity
 @Table(name = "pacientes")
 @NoArgsConstructor
