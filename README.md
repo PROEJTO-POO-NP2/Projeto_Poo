@@ -17,33 +17,9 @@ Sistema desktop desenvolvido em Java para o gerenciamento de pacientes idosas, c
 
 ## 🚀 Como Executar o Projeto
 
-### Pré-requisitos
-1. **Java Development Kit (JDK) 17** instalado na máquina.
-2. **PostgreSQL** instalado e rodando.
-3. **Maven** instalado (ou utilize o wrapper embutido se preferir).
+As instruções completas de execução, configuração do banco de dados, variáveis de ambiente e credenciais de teste foram movidas para um documento dedicado.
 
-### Configuração do Banco de Dados (.env)
-1. Na raiz do projeto, crie um arquivo chamado `.env` (você pode copiar o `.env.example`).
-2. Configure as variáveis de ambiente com os dados do seu PostgreSQL local:
-
-```env
-DB_URL=jdbc:postgresql://localhost:5432/nome_do_seu_banco
-DB_USERNAME=seu_usuario_postgres
-DB_PASSWORD=sua_senha_postgres
-```
-
-### Inicialização
-1. Abra o terminal na raiz do projeto (`c:\Users\josej\Desktop\ESTUDOS\projetos\trabalho-poo\projeto-poo`).
-2. Navegue para o diretório interno do backend (se aplicável): `cd lp2-java-unichristus`
-3. Execute o comando Maven para baixar as dependências e iniciar a aplicação:
-```bash
-mvn clean install
-mvn spring-boot:run
-```
-> **Nota de Primeira Execução:** Ao rodar a aplicação pela primeira vez com o banco limpo, o sistema (através do `DatabaseConfig`) irá criar automaticamente as tabelas (graças ao Hibernate) e inserirá um "Seed" inicial contendo dados de exemplos: 5 profissionais de saúde, 10 pacientes idosas, e exemplos de consultas e prontuários.
-
-### Acesso ao Sistema
-Utilize um dos e-mails cadastrados inicialmente (ex: `jose.medico@recanto.org`, `alisson.enf@recanto.org`, etc.) com a senha `senha123`.
+👉 **[Consulte o Guia Completo de Execução aqui](lp2-java-unichristus/docs/COMO-EXECUTAR.md)**
 
 ---
 

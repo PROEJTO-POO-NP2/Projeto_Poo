@@ -190,11 +190,11 @@ A aplicação vem pré-configurada com dados de teste para facilitar a exploraç
 
 | Perfil / Cargo | E-mail de Teste | Senha de Teste | Nome Completo |
 | :--- | :--- | :--- | :--- |
-| **Administrador / Saúde** | `ana.silva@saude.com` | `1234` | Ana Paula da Silva |
-| **Responsável Técnico** | `joao.lima@saude.com` | `abcd` | João Carlos Lima |
-| **Enfermeiro Chefe** | `mariana.costa@saude.com` | `pass` | Mariana Costa Oliveira |
-| **Médico Assistente** | `felipe.almeida@saude.com` | `4321` | Felipe Gomes de Almeida |
-| **Auxiliar de Saúde** | `larissa.oliveira@saude.com` | `qwer` | Larissa Moura de Oliveira |
+| **Administrador / Saúde** | `jose.medico@recanto.org` | `senha123` | José |
+| **Responsável Técnico** | `alisson.enf@recanto.org` | `senha123` | Alisson |
+| **Enfermeiro Chefe** | `esdras.tecnico@recanto.org` | `senha123` | Esdras |
+| **Médico Assistente** | `vini.fisio@recanto.org` | `senha123` | Vini |
+| **Auxiliar de Saúde** | `arthur.admin@recanto.org` | `senha123` | Arthur |
 
 > [!TIP]
 > **Dados Populados Automaticamente:** O banco de dados já conta com **10 Pacientes (Idosas)**, **5 Responsáveis de Saúde** e **5 Consultas** agendadas para que você veja a aplicação funcionando de imediato!
