@@ -12,6 +12,18 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+/**
+ * Tela Geral (Dashboard Administrativo).
+ *
+ * Tela principal do sistema após o login, fornecendo acesso a todos os módulos
+ * como Pacientes, Consultas, Prontuários, Eventos Sentinelas, etc.
+ *
+ * @author José, Alisson, Esdras, Vini, Arthur
+ * @version 2.0
+ */
 @org.springframework.stereotype.Component
 @NoArgsConstructor
 public class TelaGeral extends JFrame {
@@ -142,6 +154,21 @@ public class TelaGeral extends JFrame {
         button.setBorder(BorderFactory.createLineBorder(new Color(0xDDDDDD)));
         button.setFocusPainted(false);
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Efeito de hover moderno
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(Cores.COR_FUNDO_CLARO);
+                button.setBorder(BorderFactory.createLineBorder(Cores.COR_RODAPE));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(Color.WHITE);
+                button.setBorder(BorderFactory.createLineBorder(new Color(0xDDDDDD)));
+            }
+        });
 
         return button;
     }

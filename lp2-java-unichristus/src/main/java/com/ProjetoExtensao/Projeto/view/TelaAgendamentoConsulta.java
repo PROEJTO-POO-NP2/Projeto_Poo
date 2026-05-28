@@ -25,6 +25,16 @@ import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Tela para agendamento e registro de novas Consultas.
+ *
+ * Permite preencher dados do paciente (via CPF), médico, data, hora,
+ * motivo da consulta, diagnóstico (com CID-10), anotações do médico e
+ * encaminhamentos para exames ou especialistas.
+ *
+ * @author José, Alisson, Esdras, Vini, Arthur
+ * @version 2.0
+ */
 @org.springframework.stereotype.Component
 @NoArgsConstructor
 public class TelaAgendamentoConsulta extends JFrame {
@@ -50,7 +60,9 @@ public class TelaAgendamentoConsulta extends JFrame {
     private JFormattedTextField dataField;
     private JTextArea motivoConsultaArea;
     private JTextArea diagnosticoArea;
+    private JTextField codigoCidField;
     private JTextArea anotacoesMedicoArea;
+    private JTextArea encaminhamentoArea;
 
     @PostConstruct
     public void initUI() {
@@ -300,15 +312,25 @@ public class TelaAgendamentoConsulta extends JFrame {
         JScrollPane motivoScroll = new JScrollPane(motivoConsultaArea);
         formPanel.add(motivoScroll, gbc);
 
-        // --- DIAGNÓSTICO ---
+        // --- DIAGNÓSTICO E CID-10 ---
         gbc.gridy = 8;
+        gbc.gridx = 0;
+        gbc.gridwidth = 1;
         gbc.insets = new Insets(0, 0, 5, 0);
         JLabel diagnosticoLabel = new JLabel("Diagnóstico");
         diagnosticoLabel.setFont(new Font("Arial", Font.BOLD, 16));
         diagnosticoLabel.setForeground(azulEscuro);
         formPanel.add(diagnosticoLabel, gbc);
 
+        gbc.gridx = 1;
+        gbc.insets = new Insets(0, 10, 5, 0);
+        JLabel cidLabel = new JLabel("Código CID-10");
+        cidLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        cidLabel.setForeground(azulEscuro);
+        formPanel.add(cidLabel, gbc);
+
         gbc.gridy = 9;
+        gbc.gridx = 0;
         gbc.insets = new Insets(0, 0, 15, 0);
         diagnosticoArea = new JTextArea(3, 20);
         diagnosticoArea.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -317,8 +339,19 @@ public class TelaAgendamentoConsulta extends JFrame {
         JScrollPane diagnosticoScroll = new JScrollPane(diagnosticoArea);
         formPanel.add(diagnosticoScroll, gbc);
 
+        gbc.gridx = 1;
+        gbc.insets = new Insets(0, 10, 15, 0);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.NORTH;
+        codigoCidField = new JTextField();
+        codigoCidField.setFont(new Font("Arial", Font.PLAIN, 14));
+        formPanel.add(codigoCidField, gbc);
+        gbc.anchor = GridBagConstraints.WEST; // Reset anchor
+
         // --- ANOTAÇÕES DO MÉDICO ---
         gbc.gridy = 10;
+        gbc.gridx = 0;
+        gbc.gridwidth = 2;
         gbc.insets = new Insets(0, 0, 5, 0);
         JLabel anotacoesLabel = new JLabel("Anotações do Médico");
         anotacoesLabel.setFont(new Font("Arial", Font.BOLD, 16));
@@ -326,13 +359,30 @@ public class TelaAgendamentoConsulta extends JFrame {
         formPanel.add(anotacoesLabel, gbc);
 
         gbc.gridy = 11;
-        gbc.insets = new Insets(0, 0, 20, 0);
+        gbc.insets = new Insets(0, 0, 15, 0);
         anotacoesMedicoArea = new JTextArea(3, 20);
         anotacoesMedicoArea.setFont(new Font("Arial", Font.PLAIN, 14));
         anotacoesMedicoArea.setLineWrap(true);
         anotacoesMedicoArea.setWrapStyleWord(true);
         JScrollPane anotacoesScroll = new JScrollPane(anotacoesMedicoArea);
         formPanel.add(anotacoesScroll, gbc);
+
+        // --- ENCAMINHAMENTO ---
+        gbc.gridy = 12;
+        gbc.insets = new Insets(0, 0, 5, 0);
+        JLabel encaminhamentoLabel = new JLabel("Encaminhamento (Exames/Especialistas)");
+        encaminhamentoLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        encaminhamentoLabel.setForeground(azulEscuro);
+        formPanel.add(encaminhamentoLabel, gbc);
+
+        gbc.gridy = 13;
+        gbc.insets = new Insets(0, 0, 20, 0);
+        encaminhamentoArea = new JTextArea(3, 20);
+        encaminhamentoArea.setFont(new Font("Arial", Font.PLAIN, 14));
+        encaminhamentoArea.setLineWrap(true);
+        encaminhamentoArea.setWrapStyleWord(true);
+        JScrollPane encaminhamentoScroll = new JScrollPane(encaminhamentoArea);
+        formPanel.add(encaminhamentoScroll, gbc);
 
         // --- BOTÃO ATUALIZAR ---
         JButton refreshButton = panelsFactory.getRefreshButton();
@@ -352,7 +402,7 @@ public class TelaAgendamentoConsulta extends JFrame {
         agendarBtn.setBackground(Cores.COR_RODAPE);
         agendarBtn.setForeground(Color.WHITE);
         gbc.gridx = 0;
-        gbc.gridy = 12;
+        gbc.gridy = 14;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.EAST;
         gbc.fill = GridBagConstraints.NONE;
@@ -379,7 +429,9 @@ public class TelaAgendamentoConsulta extends JFrame {
             
             String motivoConsulta = motivoConsultaArea.getText().trim();
             String diagnostico = diagnosticoArea.getText().trim();
+            String codigoCID = codigoCidField.getText().trim();
             String anotacoesMedico = anotacoesMedicoArea.getText().trim();
+            String encaminhamento = encaminhamentoArea.getText().trim();
 
             // Verificar se o paciente existe
             try {
@@ -389,7 +441,8 @@ public class TelaAgendamentoConsulta extends JFrame {
                 return;
             }
 
-            consultaService.salvarConsulta(pacienteCpf, data, hora, medicoNome, tipoConsulta, motivoConsulta, diagnostico, anotacoesMedico);
+            consultaService.salvarConsultaCompleta(pacienteCpf, data, hora, medicoNome, tipoConsulta,
+                    motivoConsulta, diagnostico, codigoCID, anotacoesMedico, encaminhamento);
 
             JOptionPane.showMessageDialog(this, "✓ Consulta agendada com sucesso!\n\nVocê pode agendar outra consulta ou fechar esta janela.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             limparCampos();
@@ -495,7 +548,9 @@ public class TelaAgendamentoConsulta extends JFrame {
         if (minutoComboBox != null) minutoComboBox.setSelectedIndex(0);
         if (motivoConsultaArea != null) motivoConsultaArea.setText("");
         if (diagnosticoArea != null) diagnosticoArea.setText("");
+        if (codigoCidField != null) codigoCidField.setText("");
         if (anotacoesMedicoArea != null) anotacoesMedicoArea.setText("");
+        if (encaminhamentoArea != null) encaminhamentoArea.setText("");
     }
 
 }

@@ -22,6 +22,16 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.List;
 
+/**
+ * Tela de visualização e gerenciamento de Consultas.
+ *
+ * Permite buscar consultas de pacientes pelo CPF, visualizar
+ * detalhes como triagem, diagnóstico (com CID-10), anotações
+ * do médico e encaminhamentos gerados.
+ *
+ * @author José, Alisson, Esdras, Vini, Arthur
+ * @version 2.0
+ */
 @org.springframework.stereotype.Component
 @NoArgsConstructor
 public class TelaConsultas extends JFrame {
@@ -43,8 +53,10 @@ public class TelaConsultas extends JFrame {
     private JTextField pacienteDetalhesField;
     private JTextField especialidadeDetalhesField;
     private JTextField diagnosticoField;
+    private JTextField codigoCidField;
     private JTextArea triagemArea;
     private JTextArea medicacaoArea;
+    private JTextArea encaminhamentoArea;
 
     // Tabela de consultas
     private JTable tabelaConsultas;
@@ -346,11 +358,11 @@ public class TelaConsultas extends JFrame {
         especialidadeDetalhesField.setBorder(BorderFactory.createLineBorder(borderColor));
         detalhesPanel.add(especialidadeDetalhesField, gbc);
 
-        // Linha 4: Diagnóstico
+        // Linha 4: Diagnóstico e CID-10
         gbc.gridy = 7;
         gbc.gridx = 0;
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        gbc.weightx = 1.0;
+        gbc.gridwidth = 1;
+        gbc.weightx = 0.7;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(10, 0, 0, 0);
         JLabel diagnosticoLabel = new JLabel("Diagnóstico:");
@@ -358,7 +370,18 @@ public class TelaConsultas extends JFrame {
         diagnosticoLabel.setForeground(azulEscuro);
         detalhesPanel.add(diagnosticoLabel, gbc);
 
+        gbc.gridx = 1;
+        gbc.weightx = 0.3;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.insets = new Insets(10, 10, 0, 0);
+        JLabel cidLabel = new JLabel("Código CID-10:");
+        cidLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        cidLabel.setForeground(azulEscuro);
+        detalhesPanel.add(cidLabel, gbc);
+
         gbc.gridy = 8;
+        gbc.gridx = 0;
+        gbc.gridwidth = 1;
         gbc.insets = new Insets(0, 0, 20, 0);
         diagnosticoField = new JTextField();
         diagnosticoField.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -366,6 +389,16 @@ public class TelaConsultas extends JFrame {
         diagnosticoField.setEditable(false);
         diagnosticoField.setBorder(BorderFactory.createLineBorder(borderColor));
         detalhesPanel.add(diagnosticoField, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.insets = new Insets(0, 10, 20, 0);
+        codigoCidField = new JTextField();
+        codigoCidField.setFont(new Font("Arial", Font.PLAIN, 16));
+        codigoCidField.setBackground(Color.WHITE);
+        codigoCidField.setEditable(false);
+        codigoCidField.setBorder(BorderFactory.createLineBorder(borderColor));
+        detalhesPanel.add(codigoCidField, gbc);
 
         // Linha 5: Triagem
         gbc.gridy = 9;
@@ -411,14 +444,36 @@ public class TelaConsultas extends JFrame {
         gbc.insets = new Insets(0, 0, 20, 0);
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.weighty = 0.5;
-        medicacaoArea = new JTextArea(5, 20);
+        medicacaoArea = new JTextArea(3, 20);
         medicacaoArea.setFont(new Font("Arial", Font.PLAIN, 16));
         medicacaoArea.setBackground(Color.WHITE);
         medicacaoArea.setLineWrap(true);
         medicacaoArea.setWrapStyleWord(true);
         medicacaoArea.setEditable(false);
         medicacaoArea.setBorder(BorderFactory.createLineBorder(borderColor));
-        detalhesPanel.add(medicacaoArea, gbc);
+        detalhesPanel.add(new JScrollPane(medicacaoArea), gbc);
+
+        // Linha 7: Encaminhamento
+        gbc.gridy = 13;
+        gbc.weighty = 0.0;
+        gbc.insets = new Insets(10, 0, 0, 0);
+        JLabel encaminhamentoLabel = new JLabel("Encaminhamento (Exames/Especialistas):");
+        encaminhamentoLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        encaminhamentoLabel.setForeground(azulEscuro);
+        detalhesPanel.add(encaminhamentoLabel, gbc);
+
+        gbc.gridy = 14;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = new Insets(0, 0, 20, 0);
+        gbc.weighty = 0.5;
+        encaminhamentoArea = new JTextArea(3, 20);
+        encaminhamentoArea.setFont(new Font("Arial", Font.PLAIN, 16));
+        encaminhamentoArea.setBackground(Color.WHITE);
+        encaminhamentoArea.setLineWrap(true);
+        encaminhamentoArea.setWrapStyleWord(true);
+        encaminhamentoArea.setEditable(false);
+        encaminhamentoArea.setBorder(BorderFactory.createLineBorder(borderColor));
+        detalhesPanel.add(new JScrollPane(encaminhamentoArea), gbc);
 
         // Adicionar scroll ao painel de detalhes
         JScrollPane scrollPane = new JScrollPane(detalhesPanel);
@@ -513,8 +568,14 @@ public class TelaConsultas extends JFrame {
         if (diagnosticoField != null) {
             diagnosticoField.setText(consulta.getDiagnostico() != null ? consulta.getDiagnostico() : "");
         }
+        if (codigoCidField != null) {
+            codigoCidField.setText(consulta.getCodigoCID() != null ? consulta.getCodigoCID() : "");
+        }
         if (medicacaoArea != null) {
             medicacaoArea.setText(consulta.getAnotacoesMedico() != null ? consulta.getAnotacoesMedico() : "");
+        }
+        if (encaminhamentoArea != null) {
+            encaminhamentoArea.setText(consulta.getEncaminhamento() != null ? consulta.getEncaminhamento() : "");
         }
     }
 
@@ -527,8 +588,10 @@ public class TelaConsultas extends JFrame {
         medicoDetalhesField.setText("");
         especialidadeDetalhesField.setText("");
         diagnosticoField.setText("");
+        if (codigoCidField != null) codigoCidField.setText("");
         triagemArea.setText("");
         medicacaoArea.setText("");
+        if (encaminhamentoArea != null) encaminhamentoArea.setText("");
 
         // Garantir que a cor do texto seja azul escuro ao limpar os campos para futura digitação/carregamento
         if (consultaNumField != null) consultaNumField.setForeground(Cores.COR_RODAPE);
@@ -538,8 +601,10 @@ public class TelaConsultas extends JFrame {
         if (medicoDetalhesField != null) medicoDetalhesField.setForeground(Cores.COR_RODAPE);
         if (especialidadeDetalhesField != null) especialidadeDetalhesField.setForeground(Cores.COR_RODAPE);
         if (diagnosticoField != null) diagnosticoField.setForeground(Cores.COR_RODAPE);
+        if (codigoCidField != null) codigoCidField.setForeground(Cores.COR_RODAPE);
         if (triagemArea != null) triagemArea.setForeground(Cores.COR_RODAPE);
         if (medicacaoArea != null) medicacaoArea.setForeground(Cores.COR_RODAPE);
+        if (encaminhamentoArea != null) encaminhamentoArea.setForeground(Cores.COR_RODAPE);
 
         if (pesquisaPanel != null) {
             pesquisaPanel.setBackground(Cores.COR_FUNDO_CLARO); // Volta para a cor original

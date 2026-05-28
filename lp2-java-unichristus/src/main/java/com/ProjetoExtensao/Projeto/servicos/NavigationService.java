@@ -6,6 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+/**
+ * Serviço responsável pelo roteamento e navegação entre as telas do sistema.
+ *
+ * Utiliza o conceito de injeção de dependência "Lazy" para evitar
+ * dependências circulares entre as telas e otimizar o carregamento.
+ *
+ * @author José, Alisson, Esdras, Vini, Arthur
+ * @version 2.0
+ */
 @Service
 @NoArgsConstructor
 public class NavigationService {

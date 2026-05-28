@@ -12,7 +12,18 @@ import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
+/**
+ * Tela de Autenticação do Sistema.
+ *
+ * Permite que um Profissional de Saúde (Responsável) acesse o sistema
+ * utilizando seu e-mail e senha.
+ *
+ * @author José, Alisson, Esdras, Vini, Arthur
+ * @version 2.0
+ */
 @Component
 @NoArgsConstructor
 public class TelaLogin extends JFrame {
@@ -36,7 +47,24 @@ public class TelaLogin extends JFrame {
         setTitle("Login - Recanto do Sagrado Coração");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        
+        // Listener para confirmar saída ao fechar a janela pelo X
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                confirmarSaida();
+            }
+        });
+        
+        // Limpar os erros toda vez que a janela for exibida
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentShown(java.awt.event.ComponentEvent e) {
+                limparErros();
+            }
+        });
+
         setLayout(new BorderLayout());
         getContentPane().setBackground(Cores.COR_FUNDO_ESCURO);
 
@@ -124,7 +152,7 @@ public class TelaLogin extends JFrame {
 
         // Listeners
         btnLogar.addActionListener(e -> processarLogin());
-        btnCancelar.addActionListener(e -> dispose());
+        btnCancelar.addActionListener(e -> confirmarSaida());
 
         return wrapper;
     }
@@ -160,7 +188,23 @@ public class TelaLogin extends JFrame {
     }
 
     public void limparErros() {
-        erroEmail.setVisible(false);
-        erroSenha.setVisible(false);
+        if (erroEmail != null) erroEmail.setVisible(false);
+        if (erroSenha != null) erroSenha.setVisible(false);
+        if (txtEmail != null) txtEmail.setText("");
+        if (txtSenha != null) txtSenha.setText("");
+    }
+
+    private void confirmarSaida() {
+        int resposta = JOptionPane.showConfirmDialog(
+            this,
+            "Tem certeza que deseja sair do sistema?",
+            "Confirmação de Saída",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (resposta == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
     }
 }

@@ -7,8 +7,14 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 
 /**
- * Classe utilitária para trabalhar com CPF
- * Fornece métodos para validação, formatação e limpeza de CPF
+ * Utilitário para validação, formatação e tratamento de CPF.
+ *
+ * Fornece métodos estáticos para limpar pontuação, validar
+ * comprimento de 11 dígitos e formatar o CPF enquanto o
+ * usuário digita.
+ *
+ * @author José, Alisson, Esdras, Vini, Arthur
+ * @version 2.0
  */
 public class CPFUtils {
 

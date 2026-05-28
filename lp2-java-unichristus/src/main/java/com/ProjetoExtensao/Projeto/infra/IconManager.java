@@ -6,6 +6,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 
+/**
+ * Classe responsável por carregar e gerenciar ícones da interface gráfica.
+ *
+ * Busca os arquivos de imagem no classpath e permite escalonar imagens
+ * para os tamanhos corretos nos botões e painéis.
+ *
+ * @author José, Alisson, Esdras, Vini, Arthur
+ * @version 2.0
+ */
 @Component
 public class IconManager {
     public ImageIcon createIcon(String path) {

@@ -10,6 +10,16 @@ import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Fábrica de painéis para a interface gráfica (Header, Footer, Botões).
+ *
+ * Centraliza a criação dos painéis comuns a todas as telas,
+ * garantindo consistência visual e reaproveitamento de código.
+ * Gerencia também os botões padrão como Sair, Atualizar e Voltar ao Início.
+ *
+ * @author José, Alisson, Esdras, Vini, Arthur
+ * @version 2.0
+ */
 @Component
 public class PanelsFactory extends JFrame {
     private IconManager iconManager;

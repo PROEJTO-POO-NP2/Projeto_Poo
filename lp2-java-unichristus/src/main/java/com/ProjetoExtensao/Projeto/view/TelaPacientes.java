@@ -15,10 +15,22 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+/**
+ * Tela de visualização e gerenciamento de Pacientes.
+ *
+ * Permite buscar pacientes por nome, CPF e status, além de exibir a
+ * lista de pacientes cadastrados e oferecer acesso à tela de edição
+ * via clique duplo na tabela.
+ *
+ * @author José, Alisson, Esdras, Vini, Arthur
+ * @version 2.0
+ */
 @Component
 @NoArgsConstructor
 public class TelaPacientes extends JFrame {
@@ -246,6 +258,19 @@ public class TelaPacientes extends JFrame {
         botao.setFont(new Font("Arial", Font.BOLD, 13));
         botao.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20)); // padding interno normal
         botao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        // Efeito de hover
+        botao.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                botao.setBackground(Cores.COR_AZUL_HOVER);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                botao.setBackground(Cores.COR_RODAPE);
+            }
+        });
     }
 
     private void preencherTabela(List<Paciente> pacienteList) {
