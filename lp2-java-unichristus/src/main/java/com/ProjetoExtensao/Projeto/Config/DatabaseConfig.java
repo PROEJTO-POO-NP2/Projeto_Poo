@@ -53,15 +53,15 @@ public class DatabaseConfig {
 
                 // === Profissionais de Saúde (Equipe Atual) ===
                 ResponsavelSaude rs1 = responsavelRepositorio.save(
-                        new ResponsavelSaude("jose.rodrigues@saude.com", "1234", "José Rodrigues"));
+                        new ResponsavelSaude("jose.medico@recanto.org", "senha123", "José"));
                 ResponsavelSaude rs2 = responsavelRepositorio.save(
-                        new ResponsavelSaude("alisson.santos@saude.com", "1234", "Alisson Santos"));
+                        new ResponsavelSaude("alisson.enf@recanto.org", "senha123", "Alisson"));
                 ResponsavelSaude rs3 = responsavelRepositorio.save(
-                        new ResponsavelSaude("esdras.silva@saude.com", "1234", "Esdras Silva"));
+                        new ResponsavelSaude("esdras.tecnico@recanto.org", "senha123", "Esdras"));
                 ResponsavelSaude rs4 = responsavelRepositorio.save(
-                        new ResponsavelSaude("vini.costa@saude.com", "1234", "Vinícius Costa"));
+                        new ResponsavelSaude("vini.fisio@recanto.org", "senha123", "Vini"));
                 ResponsavelSaude rs5 = responsavelRepositorio.save(
-                        new ResponsavelSaude("arthur.lima@saude.com", "1234", "Arthur Lima"));
+                        new ResponsavelSaude("arthur.admin@recanto.org", "senha123", "Arthur"));
 
                 // === Pacientes de Exemplo ===
                 Paciente p1 = pacienteRepositorio.save(new Paciente("Ana Beatriz Silva", "12345678901",
