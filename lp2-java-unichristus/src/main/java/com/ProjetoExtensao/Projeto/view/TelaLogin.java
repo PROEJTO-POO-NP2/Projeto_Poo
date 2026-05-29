@@ -160,7 +160,15 @@ public class TelaLogin extends JFrame {
     private void processarLogin() {
         limparErros();
 
-        String email = txtEmail.getText().trim(); // Adicionado .trim() para evitar erro de espaço oculto
+        // Remove espaços, quebras de linha e caracteres invisíveis (como zero-width space)
+        String emailBruto = txtEmail.getText();
+        String email = emailBruto.replaceAll("[\\s\\u200B-\\u200D\\uFEFF]", "").toLowerCase();
+        
+        System.out.println("=========================================");
+        System.out.println("[DEBUG LOGIN] Texto digitado: [" + emailBruto + "]");
+        System.out.println("[DEBUG LOGIN] Texto limpo enviado pro DB: [" + email + "]");
+        System.out.println("=========================================");
+
         ResponsavelSaude responsavelSaude = responsavelService.findResponsavelByEmail(email);
 
         if (responsavelSaude != null) {
