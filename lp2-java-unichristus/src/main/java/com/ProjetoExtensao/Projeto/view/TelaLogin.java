@@ -198,8 +198,6 @@ public class TelaLogin extends JFrame {
     public void limparErros() {
         if (erroEmail != null) erroEmail.setVisible(false);
         if (erroSenha != null) erroSenha.setVisible(false);
-        if (txtEmail != null) txtEmail.setText("");
-        if (txtSenha != null) txtSenha.setText("");
     }
 
     private void confirmarSaida() {
