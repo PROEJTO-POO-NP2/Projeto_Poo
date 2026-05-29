@@ -43,15 +43,9 @@ public class DatabaseConfig {
                              PacienteRepositorio pacienteRepositorio,
                              ConsultaRepositorio consultaRepositorio) {
         return args -> {
-            /*
-             * Verifica se o banco já possui dados usando o repositório JPA
-             * ao invés de query SQL direta, evitando problemas de schema
-             * ou tabela inexistente na primeira execução.
-             */
-            if (pacienteRepositorio.count() == 0) {
-                System.out.println("Preenchendo o banco de dados...");
-
-                // === Profissionais de Saúde (Equipe Atual) ===
+            // Verifica se o usuário 'jose.medico@recanto.org' já existe. Se não existir, insere a nova equipe!
+            if (responsavelRepositorio.findByEmail("jose.medico@recanto.org").isEmpty()) {
+                System.out.println("Inserindo nova equipe de profissionais de saúde no banco de dados...");
                 ResponsavelSaude rs1 = responsavelRepositorio.save(
                         new ResponsavelSaude("jose.medico@recanto.org", "senha123", "José"));
                 ResponsavelSaude rs2 = responsavelRepositorio.save(
@@ -62,6 +56,20 @@ public class DatabaseConfig {
                         new ResponsavelSaude("vini.fisio@recanto.org", "senha123", "Vini"));
                 ResponsavelSaude rs5 = responsavelRepositorio.save(
                         new ResponsavelSaude("arthur.admin@recanto.org", "senha123", "Arthur"));
+            }
+
+            /*
+             * Verifica se o banco já possui pacientes e consultas.
+             */
+            if (pacienteRepositorio.count() == 0) {
+                System.out.println("Preenchendo pacientes e consultas de exemplo...");
+
+                // Recupera os profissionais recém criados (ou já existentes)
+                ResponsavelSaude rs1 = responsavelRepositorio.findByEmail("jose.medico@recanto.org").get();
+                ResponsavelSaude rs2 = responsavelRepositorio.findByEmail("alisson.enf@recanto.org").get();
+                ResponsavelSaude rs3 = responsavelRepositorio.findByEmail("esdras.tecnico@recanto.org").get();
+                ResponsavelSaude rs4 = responsavelRepositorio.findByEmail("vini.fisio@recanto.org").get();
+                ResponsavelSaude rs5 = responsavelRepositorio.findByEmail("arthur.admin@recanto.org").get();
 
                 // === Pacientes de Exemplo ===
                 Paciente p1 = pacienteRepositorio.save(new Paciente("Ana Beatriz Silva", "12345678901",
@@ -92,9 +100,9 @@ public class DatabaseConfig {
                 consultaRepositorio.save(new Consulta(LocalDate.now(), LocalTime.of(14, 20), "ESPECIALIZADA", rs4, p8));
                 consultaRepositorio.save(new Consulta(LocalDate.now(), LocalTime.of(9, 0), "EMERGENCIAL", rs5, p9));
 
-                System.out.println("Preenchimento do banco de dados concluído.");
+                System.out.println("Preenchimento de pacientes e consultas concluído.");
             } else {
-                System.out.println("Banco de dados já possui dados. Seed ignorado.");
+                System.out.println("Banco de dados já possui pacientes. Seed de pacientes ignorado.");
             }
         };
     }
