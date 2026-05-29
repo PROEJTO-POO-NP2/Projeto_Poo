@@ -12,9 +12,30 @@ public class ProjetoApplication {
 	public static void main(String[] args) {
 		System.setProperty("java.awt.headless", "false");
 
-		// Carregar variáveis do arquivo .env se ele existir na raiz do projeto
-		Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
-		dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
+		// Lógica robusta para carregar o .env independente de onde a aplicação foi iniciada (raiz ou subpasta)
+		java.io.File envLocal = new java.io.File(".env");
+		java.io.File envSubpasta = new java.io.File("lp2-java-unichristus/.env");
+		String envDir = null;
+
+		if (envLocal.exists()) {
+			envDir = "./";
+		} else if (envSubpasta.exists()) {
+			envDir = "./lp2-java-unichristus";
+		}
+
+		if (envDir != null) {
+			Dotenv dotenv = Dotenv.configure().directory(envDir).load();
+			dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
+			System.out.println("=========================================================");
+			System.out.println("[INFO] Arquivo .env carregado com sucesso do diretorio: " + (envDir.equals("./") ? "raiz atual" : envDir));
+			System.out.println("[INFO] Host do banco configurado para: " + System.getProperty("DB_HOST", "localhost"));
+			System.out.println("=========================================================");
+		} else {
+			System.out.println("=========================================================");
+			System.out.println("[AVISO] Nenhum arquivo .env encontrado!");
+			System.out.println("[AVISO] A aplicacao vai tentar usar localhost:5432 por padrao.");
+			System.out.println("=========================================================");
+		}
 
 		ApplicationContext context = SpringApplication.run(ProjetoApplication.class, args);
 
