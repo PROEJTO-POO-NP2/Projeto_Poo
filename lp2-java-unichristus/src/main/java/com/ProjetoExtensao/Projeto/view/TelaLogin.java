@@ -160,7 +160,7 @@ public class TelaLogin extends JFrame {
     private void processarLogin() {
         limparErros();
 
-        String email = txtEmail.getText();
+        String email = txtEmail.getText().trim(); // Adicionado .trim() para evitar erro de espaço oculto
         ResponsavelSaude responsavelSaude = responsavelService.findResponsavelByEmail(email);
 
         if (responsavelSaude != null) {
