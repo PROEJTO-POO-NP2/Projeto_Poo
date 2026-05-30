@@ -52,8 +52,9 @@ public class Paciente {
     @Column(nullable = false)
     private Boolean ativo = true; // Por padrão, paciente é ativo
 
+    /** Lista de consultas médicas realizadas pelo paciente. */
     @OneToMany(mappedBy = "paciente")
-    private List<Consulta> consultas;
+    private List<Consulta> consultas = new ArrayList<>();
 
     public Paciente(String nomeCompleto, String cpf, LocalDate dataNascimento, String nomeMae, String cartaoSUS, LocalDate dataEntrada) {
         this.nomeCompleto = nomeCompleto;
@@ -63,6 +64,7 @@ public class Paciente {
         this.cartaoSUS = cartaoSUS;
         this.dataEntrada = dataEntrada;
         this.ativo = true; // Por padrão, paciente é ativo
+        this.consultas = new ArrayList<>();
     }
 
     public void addConsulta(Consulta consulta) {

@@ -62,6 +62,7 @@ public class TelaLogin extends JFrame {
             @Override
             public void componentShown(java.awt.event.ComponentEvent e) {
                 limparErros();
+                txtSenha.setText("");
             }
         });
 
@@ -135,12 +136,14 @@ public class TelaLogin extends JFrame {
         btnLogar.setPreferredSize(new Dimension(100, 30));
         btnLogar.setBackground(Cores.COR_RODAPE);
         btnLogar.setForeground(Color.WHITE);
+        btnLogar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnPanel.add(btnLogar);
 
         JButton btnCancelar = new JButton("Cancelar");
         btnCancelar.setPreferredSize(new Dimension(100, 30));
         btnCancelar.setBackground(Cores.COR_RODAPE);
         btnCancelar.setForeground(Color.WHITE);
+        btnCancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnPanel.add(btnCancelar);
 
         painelCentral.add(btnPanel);
@@ -160,21 +163,18 @@ public class TelaLogin extends JFrame {
     private void processarLogin() {
         limparErros();
 
-        // Remove espaços, quebras de linha e caracteres invisíveis (como zero-width space)
+        // Remove espaços, quebras de linha e caracteres invisíveis
         String emailBruto = txtEmail.getText();
         String email = emailBruto.replaceAll("[\\s\\u200B-\\u200D\\uFEFF]", "").toLowerCase();
         
-        System.out.println("=========================================");
-        System.out.println("[DEBUG LOGIN] Texto digitado: [" + emailBruto + "]");
-        System.out.println("[DEBUG LOGIN] Texto limpo enviado pro DB: [" + email + "]");
-        System.out.println("=========================================");
-
         ResponsavelSaude responsavelSaude = responsavelService.findResponsavelByEmail(email);
 
         if (responsavelSaude != null) {
             String senha = new String(txtSenha.getPassword());
 
-            if (responsavelSaude.getSenha().equals(senha)) {
+            // Comparação mais segura para evitar timing attacks
+            if (java.security.MessageDigest.isEqual(responsavelSaude.getSenha().getBytes(java.nio.charset.StandardCharsets.UTF_8), 
+                                                      senha.getBytes(java.nio.charset.StandardCharsets.UTF_8))) {
                 navigationService.abrirTelaGeral();
                 dispose();
             } else {

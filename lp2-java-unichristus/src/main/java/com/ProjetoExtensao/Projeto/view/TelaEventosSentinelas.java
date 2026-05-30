@@ -19,9 +19,15 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.time.format.DateTimeFormatter;
+import com.ProjetoExtensao.Projeto.infra.FormatadorDataHora;
 import java.util.List;
 
+/**
+ * Tela de listagem e acompanhamento de Eventos Sentinelas.
+ *
+ * @author José, Alisson, Esdras, Vini, Arthur
+ * @version 2.0
+ */
 @Component
 @NoArgsConstructor
 public class TelaEventosSentinelas extends JFrame {
@@ -103,6 +109,7 @@ public class TelaEventosSentinelas extends JFrame {
         novoEventoBtn.setForeground(Color.WHITE);
         novoEventoBtn.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
         novoEventoBtn.setFocusPainted(false);
+        novoEventoBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         sectionButtonsPanel.add(novoEventoBtn);
 
         novoEventoBtn.addActionListener(e -> abrirCadastroEvento());
@@ -161,6 +168,7 @@ public class TelaEventosSentinelas extends JFrame {
         pesquisarBtn.setBackground(azulEscuro);
         pesquisarBtn.setForeground(Color.WHITE);
         pesquisarBtn.setFocusPainted(false);
+        pesquisarBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         pesquisarBtn.setBorder(new EmptyBorder(8, 15, 8, 15));
         pesquisaPanel.add(pesquisarBtn, gbc);
 
@@ -262,14 +270,12 @@ public class TelaEventosSentinelas extends JFrame {
             return;
         }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        
         for (EventoSentinela evento : eventos) {
             Object[] linha = {
                 evento.getId(),
                 formatarNomeEvento(evento.getEventosOcorridos().name()),
                 evento.getDescricao(),
-                evento.getDataEvento().format(formatter)
+                evento.getDataEvento().format(FormatadorDataHora.DATE_TIME_FORMATTER)
             };
             modeloTabela.addRow(linha);
         }

@@ -205,13 +205,16 @@ Com o banco de dados configurado e as variáveis de ambiente ajustadas no seu ar
 
 A aplicação vem pré-configurada com dados de teste para facilitar a exploração dos fluxos de trabalho. Utilize qualquer um dos responsáveis de saúde abaixo para efetuar o login:
 
-| Perfil / Cargo | E-mail de Teste | Senha de Teste | Nome Completo |
-| :--- | :--- | :--- | :--- |
-| **Administrador / Saúde** | `jose.medico@recanto.org` | `senha123` | José |
-| **Responsável Técnico** | `alisson.enf@recanto.org` | `senha123` | Alisson |
-| **Enfermeiro Chefe** | `esdras.tecnico@recanto.org` | `senha123` | Esdras |
-| **Médico Assistente** | `vini.fisio@recanto.org` | `senha123` | Vini |
-| **Auxiliar de Saúde** | `arthur.admin@recanto.org` | `senha123` | Arthur |
+| Perfil / Cargo | E-mail de Teste | Senha de Teste | Nome Completo | Especialidade |
+| :--- | :--- | :--- | :--- | :--- |
+| **Administrador / Saúde** | `jose.medico@recanto.org` | `senha123` | José | Clinico Geral |
+| **Responsável Técnico** | `alisson.enf@recanto.org` | `senha123` | Alisson | Enfermeiro |
+| **Enfermeiro Chefe** | `esdras.tecnico@recanto.org` | `senha123` | Esdras | Tecnico de Enfermagem |
+| **Médico Assistente** | `vini.fisio@recanto.org` | `senha123` | Vini | Fisioterapeuta |
+| **Auxiliar de Saúde** | `arthur.admin@recanto.org` | `senha123` | Arthur | Administrador |
+
+> [!WARNING]
+> Em um ambiente de produção real, as senhas nunca devem ser mantidas em texto plano. Esta abordagem (`senha123`) foi utilizada estritamente para simplificar o contexto de avaliação do projeto acadêmico.
 
 > [!TIP]
 > **Dados Populados Automaticamente:** O banco de dados já conta com **10 Pacientes (Idosas)**, **5 Responsáveis de Saúde** e **5 Consultas** agendadas para que você veja a aplicação funcionando de imediato!
@@ -264,7 +267,7 @@ Para os desenvolvedores do projeto, seguem os detalhes da pilha tecnológica e d
 ### Sincronização do Hibernate e JDBC
 O arquivo `application.properties` utiliza interpolação de variáveis de ambiente do Spring Boot:
 ```properties
-spring.datasource.url=${DB_URL:jdbc:postgresql://${DB_HOST:192.168.1.244}:${DB_PORT:5432}/${DB_NAME:base_estudos}?currentSchema=${DB_SCHEMA:bd_rsc_poo}}
+spring.datasource.url=${DB_URL:jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:base_estudos}?currentSchema=${DB_SCHEMA:bd_rsc_poo}}
 spring.jpa.properties.hibernate.default_schema=${DB_SCHEMA:bd_rsc_poo}
 ```
 Esta arquitetura garante que, ao alterar o `DB_SCHEMA` no arquivo `.env`, o JDBC e o JPA convergirão sempre para a mesma base lógica, garantindo 100% de estabilidade na execução local e em servidores de produção.

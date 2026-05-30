@@ -1,7 +1,7 @@
 package com.ProjetoExtensao.Projeto.view;
 
 import com.ProjetoExtensao.Projeto.infra.Cores;
-import com.ProjetoExtensao.Projeto.infra.DateTimeFormatter;
+import com.ProjetoExtensao.Projeto.infra.FormatadorDataHora;
 import com.ProjetoExtensao.Projeto.models.Paciente;
 import com.ProjetoExtensao.Projeto.servicos.PacienteService;
 import com.ProjetoExtensao.Projeto.utils.CPFUtils;
@@ -15,8 +15,15 @@ import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Tela responsável por realizar o cadastro e edição de Pacientes.
+ *
+ * @author José, Alisson, Esdras, Vini, Arthur
+ * @version 2.0
+ */
 @Component
 @NoArgsConstructor
 public class TelaCadastroPacientes extends JFrame {
@@ -168,7 +175,7 @@ public class TelaCadastroPacientes extends JFrame {
             txt.setColumns(15);
             txt.setFont(font);
         } catch (ParseException e) {
-            e.printStackTrace();
+            System.err.println("Erro de parse na máscara: " + e.getMessage());
         }
         return txt;
     }
@@ -179,6 +186,7 @@ public class TelaCadastroPacientes extends JFrame {
         btn.setForeground(Color.WHITE);
         btn.setFocusPainted(false);
         btn.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         return btn;
     }
 

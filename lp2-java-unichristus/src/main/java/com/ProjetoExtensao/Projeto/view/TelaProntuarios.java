@@ -1,7 +1,7 @@
 package com.ProjetoExtensao.Projeto.view;
 
 import com.ProjetoExtensao.Projeto.infra.Cores;
-import com.ProjetoExtensao.Projeto.infra.DateTimeFormatter;
+import com.ProjetoExtensao.Projeto.infra.FormatadorDataHora;
 import com.ProjetoExtensao.Projeto.infra.PanelsFactory;
 import com.ProjetoExtensao.Projeto.models.*;
 import com.ProjetoExtensao.Projeto.servicos.NavigationService;
@@ -342,7 +342,7 @@ public class TelaProntuarios extends JFrame {
         pacienteNomeField.setText(prontuarioAtual.getPaciente().getNomeCompleto() +
                 " — CPF: " + prontuarioAtual.getPaciente().getCpf());
         dataCriacaoField.setText(prontuarioAtual.getDataCriacao()
-                .format(DateTimeFormatter.DATE_TIME_FORMATTER));
+                .format(FormatadorDataHora.DATE_TIME_FORMATTER));
         observacoesArea.setText(prontuarioAtual.getObservacoesGerais() != null
                 ? prontuarioAtual.getObservacoesGerais() : "");
 
@@ -351,7 +351,7 @@ public class TelaProntuarios extends JFrame {
         for (Consulta c : prontuarioAtual.getConsultas()) {
             modeloConsultas.addRow(new Object[]{
                     c.getId(),
-                    c.getData().format(DateTimeFormatter.DATE_TIME_FORMATTER),
+                    c.getData().format(FormatadorDataHora.DATE_TIME_FORMATTER),
                     c.getHora().toString(),
                     c.getTipoConsulta().toString(),
                     c.getResponsavelSaude().getNomeCompleto(),
@@ -365,7 +365,7 @@ public class TelaProntuarios extends JFrame {
             modeloExames.addRow(new Object[]{
                     ex.getId(),
                     ex.getNomeExame(),
-                    ex.getDataExame().format(DateTimeFormatter.DATE_TIME_FORMATTER),
+                    ex.getDataExame().format(FormatadorDataHora.DATE_TIME_FORMATTER),
                     ex.getResultado() != null ? ex.getResultado() : "Aguardando resultado"
             });
         }
@@ -378,7 +378,7 @@ public class TelaProntuarios extends JFrame {
                     p.getMedicamento(),
                     p.getDosagem(),
                     p.getInstrucoes() != null ? p.getInstrucoes() : "—",
-                    p.getDataPrescricao().format(DateTimeFormatter.DATE_TIME_FORMATTER)
+                    p.getDataPrescricao().format(FormatadorDataHora.DATE_TIME_FORMATTER)
             });
         }
     }

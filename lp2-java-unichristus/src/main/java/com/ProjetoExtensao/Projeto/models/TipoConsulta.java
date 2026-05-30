@@ -19,6 +19,6 @@ public enum TipoConsulta {
                 return consulta;
             }
         }
-        return null;
+        throw new IllegalArgumentException("Tipo de consulta inválido: " + type);
     }
 }

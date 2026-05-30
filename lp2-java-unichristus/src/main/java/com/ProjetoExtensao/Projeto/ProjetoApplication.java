@@ -6,9 +6,23 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
+/**
+ * Classe principal responsável por inicializar a aplicação Spring Boot.
+ *
+ * Configura o carregamento seguro de variáveis de ambiente (.env) e
+ * inicializa o contexto visual (Swing) e a navegação inicial.
+ *
+ * @author José, Alisson, Esdras, Vini, Arthur
+ * @version 2.0
+ */
 @SpringBootApplication
 public class ProjetoApplication {
 
+	/**
+	 * Método de entrada da aplicação.
+	 *
+	 * @param args argumentos de linha de comando
+	 */
 	public static void main(String[] args) {
 		System.setProperty("java.awt.headless", "false");
 

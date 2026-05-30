@@ -21,7 +21,7 @@ import java.util.Date;
  * @version 2.0
  */
 @Component
-public class PanelsFactory extends JFrame {
+public class PanelsFactory {
     private IconManager iconManager;
     private NavigationService navigationService;
 
@@ -34,6 +34,10 @@ public class PanelsFactory extends JFrame {
         this.navigationService = navigationService;
     }
 
+    /**
+     * Cria e retorna o painel de cabeçalho (Header).
+     * @return o painel de cabeçalho
+     */
     public JPanel getHeaderPanel() {
         JPanel headerPanel = new JPanel(new BorderLayout(10, 10));
         headerPanel.setBackground(Color.WHITE);
@@ -84,7 +88,7 @@ public class PanelsFactory extends JFrame {
 
             Window janelaAtual = SwingUtilities.getWindowAncestor((java.awt.Component) e.getSource());
             if (janelaAtual != null) {
-                janelaAtual.dispose();;
+                janelaAtual.dispose();
             }
         });
 
@@ -108,17 +112,33 @@ public class PanelsFactory extends JFrame {
         return headerPanel;
     }
 
+    /**
+     * Retorna o botão de atualizar padrão.
+     * @return o botão de refresh
+     */
     public JButton getRefreshButton() {
         return refreshButton;
     }
+
+    /**
+     * Retorna o botão do painel administrativo.
+     * @return o botão admin
+     */
     public JButton getAdminButton(){
         return adminButton;
     }
 
+    /**
+     * Cria e retorna o painel de rodapé (Footer).
+     * @return o painel de rodapé
+     */
     public JPanel getFooterPanel() {
         JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         footerPanel.setBackground(Cores.COR_RODAPE);
-        footerPanel.setPreferredSize(new Dimension(getWidth(), 40));
+        // Sem chamada a getWidth() de JFrame, defino um tamanho padrão genérico se necessário, 
+        // ou omito setPreferredSize se o layout tratar. O layout FlowLayout vai tratar bem o height.
+        footerPanel.setPreferredSize(new Dimension(800, 400));
+        footerPanel.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, 40));
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 

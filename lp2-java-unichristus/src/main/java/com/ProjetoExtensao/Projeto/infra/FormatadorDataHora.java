@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  * @version 2.0
  */
 @Component
-public class DateTimeFormatter {
+public class FormatadorDataHora {
     public static final java.time.format.DateTimeFormatter DATE_TIME_FORMATTER = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy");
     public static final java.time.format.DateTimeFormatter TIME_FORMATTER = java.time.format.DateTimeFormatter.ofPattern("HH:mm");
 }

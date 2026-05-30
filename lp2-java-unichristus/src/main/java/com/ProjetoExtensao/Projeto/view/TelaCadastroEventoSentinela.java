@@ -17,8 +17,15 @@ import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.text.ParseException;
+import java.text.ParseException;
 import java.time.LocalDate;
 
+/**
+ * Tela responsável pelo cadastro de novos Eventos Sentinelas.
+ *
+ * @author José, Alisson, Esdras, Vini, Arthur
+ * @version 2.0
+ */
 @Component
 @NoArgsConstructor
 public class TelaCadastroEventoSentinela extends JFrame {
@@ -81,6 +88,7 @@ public class TelaCadastroEventoSentinela extends JFrame {
         btnBuscarCpf.setBackground(Cores.COR_RODAPE);
         btnBuscarCpf.setForeground(Color.WHITE);
         btnBuscarCpf.setFocusPainted(false);
+        btnBuscarCpf.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnBuscarCpf.addActionListener(e -> buscarPacientePorCpf());
         
         panelCpf.add(txtCpf);
@@ -184,7 +192,7 @@ public class TelaCadastroEventoSentinela extends JFrame {
             txt.setColumns(15);
             txt.setFont(font);
         } catch (ParseException e) {
-            e.printStackTrace();
+            System.err.println("Erro de parse na máscara: " + e.getMessage());
         }
         return txt;
     }
@@ -195,6 +203,7 @@ public class TelaCadastroEventoSentinela extends JFrame {
         btn.setForeground(Color.WHITE);
         btn.setFocusPainted(false);
         btn.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         return btn;
     }
 

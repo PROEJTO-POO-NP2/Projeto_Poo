@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Entidade que representa um Profissional/Responsável de Saúde.
@@ -38,22 +39,27 @@ public class ResponsavelSaude {
     @Column(nullable = false)
     private String nomeCompleto;
 
+    /** Lista de consultas realizadas por este profissional. */
     @OneToMany(mappedBy = "responsavelSaude")
-    private List<Consulta> consultas;
+    private List<Consulta> consultas = new ArrayList<>();
 
+    /** Especialidade médica ou área de atuação (ex: Clinico Geral, Enfermeiro, Fisioterapeuta). */
     @Column(length = 100)
-    private String especialidade; // Ex: "Clinico Geral", "Enfermeiro", "Fisioterapeuta"
+    private String especialidade;
 
+    /** Número do registro no conselho profissional (ex: CRM, COREN, CREFITO). */
     @Column(length = 20)
-    private String registroProfissional; // CRM, COREN, CREFITO etc.
+    private String registroProfissional;
 
+    /** Cargo que ocupa na instituição (ex: Medico, Enfermeiro, Tecnico de Enfermagem). */
     @Column(length = 50)
-    private String cargo; // "Medico", "Enfermeiro", "Tecnico de Enfermagem"
+    private String cargo;
 
     public ResponsavelSaude(String email, String senha, String nomeCompleto) {
         this.email = email;
         this.senha = senha;
         this.nomeCompleto = nomeCompleto;
+        this.consultas = new ArrayList<>();
     }
 
     public void addConsulta(Consulta consulta) {

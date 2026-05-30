@@ -40,7 +40,7 @@ public class TelaGeral extends JFrame {
 
     @PostConstruct
     private void initUI() {
-        setTitle("Tela 2 - Geral");
+        setTitle("Recanto do Sagrado Coração - Painel Administrativo");
         setSize(900, 700);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setMinimumSize(new Dimension(800, 600));

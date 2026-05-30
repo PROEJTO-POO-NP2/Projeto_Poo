@@ -1,6 +1,6 @@
 package com.ProjetoExtensao.Projeto.servicos;
 
-import com.ProjetoExtensao.Projeto.infra.DateTimeFormatter;
+import com.ProjetoExtensao.Projeto.infra.FormatadorDataHora;
 import com.ProjetoExtensao.Projeto.models.Consulta;
 import com.ProjetoExtensao.Projeto.models.Paciente;
 import com.ProjetoExtensao.Projeto.models.TipoConsulta;
@@ -81,8 +81,8 @@ public class ConsultaService {
                                String anotacoesMedico) {
         Consulta consulta = new Consulta();
 
-        consulta.setData(LocalDate.parse(data, DateTimeFormatter.DATE_TIME_FORMATTER));
-        consulta.setHora(LocalTime.parse(hora, DateTimeFormatter.TIME_FORMATTER));
+        consulta.setData(LocalDate.parse(data, FormatadorDataHora.DATE_TIME_FORMATTER));
+        consulta.setHora(LocalTime.parse(hora, FormatadorDataHora.TIME_FORMATTER));
         consulta.setTipoConsulta(TipoConsulta.getType(tipoConsulta));
 
         consulta.setPaciente(pacienteService.findPacienteByCpf(pacienteCpf));
@@ -116,8 +116,8 @@ public class ConsultaService {
                                        String encaminhamento) {
         Consulta consulta = new Consulta();
 
-        consulta.setData(LocalDate.parse(data, DateTimeFormatter.DATE_TIME_FORMATTER));
-        consulta.setHora(LocalTime.parse(hora, DateTimeFormatter.TIME_FORMATTER));
+        consulta.setData(LocalDate.parse(data, FormatadorDataHora.DATE_TIME_FORMATTER));
+        consulta.setHora(LocalTime.parse(hora, FormatadorDataHora.TIME_FORMATTER));
         consulta.setTipoConsulta(TipoConsulta.getType(tipoConsulta));
 
         consulta.setPaciente(pacienteService.findPacienteByCpf(pacienteCpf));

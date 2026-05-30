@@ -1,7 +1,7 @@
 package com.ProjetoExtensao.Projeto.view;
 
 import com.ProjetoExtensao.Projeto.infra.Cores;
-import com.ProjetoExtensao.Projeto.infra.DateTimeFormatter;
+import com.ProjetoExtensao.Projeto.infra.FormatadorDataHora;
 import com.ProjetoExtensao.Projeto.infra.PanelsFactory;
 import com.ProjetoExtensao.Projeto.models.Paciente;
 import com.ProjetoExtensao.Projeto.servicos.NavigationService;
@@ -281,9 +281,9 @@ public class TelaPacientes extends JFrame {
             linha.add(paciente.getId().toString()); // ID (coluna oculta)
             linha.add(paciente.getNomeCompleto());
             linha.add(paciente.getCpf());
-            linha.add(paciente.getDataNascimento().format(DateTimeFormatter.DATE_TIME_FORMATTER));
+            linha.add(paciente.getDataNascimento().format(FormatadorDataHora.DATE_TIME_FORMATTER));
             linha.add(paciente.getCartaoSUS());
-            linha.add(paciente.getDataEntrada().format(DateTimeFormatter.DATE_TIME_FORMATTER));
+            linha.add(paciente.getDataEntrada().format(FormatadorDataHora.DATE_TIME_FORMATTER));
             linha.add(paciente.getNomeMae());
             linha.add(paciente.getAtivo() ? "Ativo" : "Inativo");
 

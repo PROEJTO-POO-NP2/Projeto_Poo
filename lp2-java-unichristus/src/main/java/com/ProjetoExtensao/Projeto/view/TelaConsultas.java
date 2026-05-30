@@ -1,7 +1,7 @@
 package com.ProjetoExtensao.Projeto.view;
 
 import com.ProjetoExtensao.Projeto.infra.Cores;
-import com.ProjetoExtensao.Projeto.infra.DateTimeFormatter;
+import com.ProjetoExtensao.Projeto.infra.FormatadorDataHora;
 import com.ProjetoExtensao.Projeto.infra.IconManager;
 import com.ProjetoExtensao.Projeto.infra.PanelsFactory;
 import com.ProjetoExtensao.Projeto.models.Consulta;
@@ -66,7 +66,6 @@ public class TelaConsultas extends JFrame {
 
     // Campos de pesquisa
     private JTextField pacientCpfField;
-    private JTextField medicoPesquisaField;
     private JPanel pesquisaPanel;
     private JButton refreshButton;
 
@@ -555,7 +554,7 @@ public class TelaConsultas extends JFrame {
 
     private void atualizarDadosConsulta(Consulta consulta) {
         consultaNumField.setText(consulta.getId().toString());
-        dataConsultaField.setText(consulta.getData().format(DateTimeFormatter.DATE_TIME_FORMATTER));
+        dataConsultaField.setText(consulta.getData().format(FormatadorDataHora.DATE_TIME_FORMATTER));
         horaConsultaField.setText(consulta.getHora().toString());
         pacienteDetalhesField.setText(consulta.getPaciente().getNomeCompleto());
         medicoDetalhesField.setText(consulta.getResponsavelSaude().getNomeCompleto());
@@ -658,7 +657,7 @@ public class TelaConsultas extends JFrame {
                 c.getId(),
                 c.getResponsavelSaude().getNomeCompleto(),
                 c.getTipoConsulta(),
-                c.getData().format(DateTimeFormatter.DATE_TIME_FORMATTER),
+                c.getData().format(FormatadorDataHora.DATE_TIME_FORMATTER),
                 c.getHora());
         }
         
