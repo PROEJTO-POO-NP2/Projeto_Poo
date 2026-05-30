@@ -46,7 +46,7 @@ public class TelaPacientes extends JFrame {
     private JTextField campoNome;
     private JTextField campoCpf;
 
-    private boolean primerioAcesso = false;
+    private boolean primeiroAcesso = false;
     private List<Paciente> pacientes = new ArrayList<>();
 
     @PostConstruct
@@ -225,10 +225,10 @@ public class TelaPacientes extends JFrame {
     }
 
     private void recuperarDadosPrimeiroAcesso() {
-        if (!primerioAcesso) {
+        if (!primeiroAcesso) {
             pacientes = pacienteService.findAllPacientes();
 
-            primerioAcesso = true;
+            primeiroAcesso = true;
 
             preencherTabela(pacientes);
         } else {
