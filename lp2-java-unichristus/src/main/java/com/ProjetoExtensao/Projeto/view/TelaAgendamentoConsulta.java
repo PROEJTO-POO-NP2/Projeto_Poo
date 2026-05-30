@@ -424,7 +424,8 @@ public class TelaAgendamentoConsulta extends JFrame {
             String data = dataField.getText();
             String hora = horaComboBox.getSelectedItem() + ":" + minutoComboBox.getSelectedItem();
 
-            String medicoNome = (String) medicosComboBox.getSelectedItem();
+            String medicoNomeSelecionado = (String) medicosComboBox.getSelectedItem();
+            String medicoNome = medicoNomeSelecionado.contains(" - ") ? medicoNomeSelecionado.split(" - ")[0] : medicoNomeSelecionado;
             String tipoConsulta = (String) especialidadeComboBox.getSelectedItem();
             
             String motivoConsulta = motivoConsultaArea.getText().trim();
@@ -493,7 +494,8 @@ public class TelaAgendamentoConsulta extends JFrame {
 
         List<ResponsavelSaude> responsavelSaudeList = responsavelService.findAllResponsaveis();
         for (ResponsavelSaude rs : responsavelSaudeList) {
-            model.addElement(rs.getNomeCompleto());
+            String especialidadeStr = rs.getEspecialidade() != null ? rs.getEspecialidade() : "Sem Especialidade";
+            model.addElement(rs.getNomeCompleto() + " - " + especialidadeStr);
         }
         medicosComboBox.setModel(model);
     }

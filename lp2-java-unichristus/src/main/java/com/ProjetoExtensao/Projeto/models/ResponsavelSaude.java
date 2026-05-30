@@ -41,6 +41,15 @@ public class ResponsavelSaude {
     @OneToMany(mappedBy = "responsavelSaude")
     private List<Consulta> consultas;
 
+    @Column(length = 100)
+    private String especialidade; // Ex: "Clinico Geral", "Enfermeiro", "Fisioterapeuta"
+
+    @Column(length = 20)
+    private String registroProfissional; // CRM, COREN, CREFITO etc.
+
+    @Column(length = 50)
+    private String cargo; // "Medico", "Enfermeiro", "Tecnico de Enfermagem"
+
     public ResponsavelSaude(String email, String senha, String nomeCompleto) {
         this.email = email;
         this.senha = senha;

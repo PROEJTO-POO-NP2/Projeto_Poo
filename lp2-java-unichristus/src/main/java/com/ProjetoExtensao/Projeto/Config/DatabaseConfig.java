@@ -43,19 +43,28 @@ public class DatabaseConfig {
                              PacienteRepositorio pacienteRepositorio,
                              ConsultaRepositorio consultaRepositorio) {
         return args -> {
-            // Verifica se o usuário 'jose.medico@recanto.org' já existe. Se não existir, insere a nova equipe!
             if (responsavelRepositorio.findByEmail("jose.medico@recanto.org").isEmpty()) {
                 System.out.println("Inserindo nova equipe de profissionais de saúde no banco de dados...");
-                ResponsavelSaude rs1 = responsavelRepositorio.save(
-                        new ResponsavelSaude("jose.medico@recanto.org", "senha123", "José"));
-                ResponsavelSaude rs2 = responsavelRepositorio.save(
-                        new ResponsavelSaude("alisson.enf@recanto.org", "senha123", "Alisson"));
-                ResponsavelSaude rs3 = responsavelRepositorio.save(
-                        new ResponsavelSaude("esdras.tecnico@recanto.org", "senha123", "Esdras"));
-                ResponsavelSaude rs4 = responsavelRepositorio.save(
-                        new ResponsavelSaude("vini.fisio@recanto.org", "senha123", "Vini"));
-                ResponsavelSaude rs5 = responsavelRepositorio.save(
-                        new ResponsavelSaude("arthur.admin@recanto.org", "senha123", "Arthur"));
+                
+                ResponsavelSaude rs1 = new ResponsavelSaude("jose.medico@recanto.org", "senha123", "José");
+                rs1.setEspecialidade("Clínico Geral"); rs1.setCargo("Médico"); rs1.setRegistroProfissional("CRM 11111");
+                responsavelRepositorio.save(rs1);
+                
+                ResponsavelSaude rs2 = new ResponsavelSaude("alisson.enf@recanto.org", "senha123", "Alisson");
+                rs2.setEspecialidade("Enfermeiro Padrão"); rs2.setCargo("Enfermeiro"); rs2.setRegistroProfissional("COREN 22222");
+                responsavelRepositorio.save(rs2);
+                
+                ResponsavelSaude rs3 = new ResponsavelSaude("esdras.tecnico@recanto.org", "senha123", "Esdras");
+                rs3.setEspecialidade("Técnico em Enfermagem"); rs3.setCargo("Técnico"); rs3.setRegistroProfissional("COREN 33333");
+                responsavelRepositorio.save(rs3);
+                
+                ResponsavelSaude rs4 = new ResponsavelSaude("vini.fisio@recanto.org", "senha123", "Vini");
+                rs4.setEspecialidade("Fisioterapia Respiratória"); rs4.setCargo("Fisioterapeuta"); rs4.setRegistroProfissional("CREFITO 44444");
+                responsavelRepositorio.save(rs4);
+                
+                ResponsavelSaude rs5 = new ResponsavelSaude("arthur.admin@recanto.org", "senha123", "Arthur");
+                rs5.setEspecialidade("Administração Hospitalar"); rs5.setCargo("Administrador"); rs5.setRegistroProfissional("CRA 55555");
+                responsavelRepositorio.save(rs5);
             }
 
             /*

@@ -4,6 +4,7 @@ import com.ProjetoExtensao.Projeto.infra.Cores;
 import com.ProjetoExtensao.Projeto.infra.IconManager;
 import com.ProjetoExtensao.Projeto.infra.PanelsFactory;
 import com.ProjetoExtensao.Projeto.servicos.NavigationService;
+import com.ProjetoExtensao.Projeto.servicos.PacienteService;
 import jakarta.annotation.PostConstruct;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,8 @@ public class TelaGeral extends JFrame {
     private IconManager iconManager;
     @Autowired
     private NavigationService navigationService;
+    @Autowired
+    private PacienteService pacienteService;
 
 
     @PostConstruct
@@ -67,7 +70,8 @@ public class TelaGeral extends JFrame {
 
         JPanel statsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 30, 0));
         statsPanel.setOpaque(false);
-        statsPanel.add(createStatItem("Pacientes", "100", Cores.COR_VERMELHO_IDOSAS));
+        long totalPacientes = pacienteService.findPacientesByAtivo(true).size();
+        statsPanel.add(createStatItem("Pacientes Ativos", String.valueOf(totalPacientes), Cores.COR_VERMELHO_IDOSAS));
         statsPanel.add(createStatItem("Enfermaria", "20", Cores.COR_VERDE_ENFERMARIA));
         statsPanel.add(createStatItem("Visitas", "2", Cores.COR_VERDE_ENFERMARIA));
 
