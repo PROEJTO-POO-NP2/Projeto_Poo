@@ -77,7 +77,7 @@ Se você possui o [Docker Desktop](https://www.docker.com/products/docker-deskto
    ```bash
    docker compose up -d
    ```
-   *Pronto! O Docker fará o download do PostgreSQL e executará nosso script `init.sql`, criando automaticamente o schema `bd_rsc_poo` e o usuário. Você já pode pular direto para o Passo 3.*
+   *Pronto! O Docker fará o download do PostgreSQL. Como a aplicação (Hibernate) já está configurada para criar o schema automaticamente, você já pode pular direto para o Passo 3.*
 
 ### Opção B: Configuração Manual
 Se não quiser utilizar Docker, instale e inicie o seu próprio servidor PostgreSQL local e siga os passos abaixo:

@@ -18,7 +18,6 @@ Este diretório contém os arquivos necessários para subir rapidamente uma inst
    *(A flag `-d` faz com que o banco rode em segundo plano).*
 
 3. O Docker fará o download da imagem do PostgreSQL e iniciará o banco de dados automaticamente na porta padrão (5432).
-4. O script `init.sql` será executado automaticamente na primeira vez que o container for criado, configurando o schema `bd_rsc_poo` que a aplicação espera.
 
 ## Integração Automática com a Aplicação
 
