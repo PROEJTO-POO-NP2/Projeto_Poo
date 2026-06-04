@@ -63,7 +63,24 @@ Antes de iniciar, certifique-se de ter os seguintes componentes instalados em su
 
 ## 🐘 Passo 2: Configurar o PostgreSQL
 
-A aplicação necessita de um banco de dados PostgreSQL ativo. Siga as instruções abaixo para preparar o banco de dados antes de iniciar o sistema:
+A aplicação necessita de um banco de dados PostgreSQL ativo. Você pode escolher configurar o banco de dados manualmente ou de forma automatizada usando Docker.
+
+### Opção A: Configuração Automatizada via Docker (Recomendado)
+Se você possui o [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado, você pode subir o banco de dados com toda a configuração pronta em apenas um passo.
+
+1. Abra o terminal e navegue até a pasta `docker` do projeto:
+   ```cmd
+   cd C:\Projetos\projeto-poo\lp2-java-unichristus\docker
+   ```
+   *(Substitua pelo caminho real do seu projeto, caso diferente).*
+2. Execute o comando para iniciar o container:
+   ```bash
+   docker compose up -d
+   ```
+   *Pronto! O Docker fará o download do PostgreSQL e executará nosso script `init.sql`, criando automaticamente o schema `bd_rsc_poo` e o usuário. Você já pode pular direto para o Passo 3.*
+
+### Opção B: Configuração Manual
+Se não quiser utilizar Docker, instale e inicie o seu próprio servidor PostgreSQL local e siga os passos abaixo:
 
 1. **Acesse o seu PostgreSQL** utilizando sua ferramenta de preferência (pgAdmin / DBeaver).
 2. **Crie a base de dados principal:**
