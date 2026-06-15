@@ -24,9 +24,43 @@ import java.awt.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
+/**
+ * Tela central de relatórios e estatísticas da aplicação.
+ *
+ * <p>Organizada em três abas (JTabbedPane), cada uma com uma finalidade analítica distinta:</p>
+ *
+ * <h3>Aba 1 — Relatório Individual</h3>
+ * <p>O usuário informa o CPF de um residente e o sistema exibe:</p>
+ * <ul>
+ *   <li>Ficha pessoal (nome, CPF, data de nascimento, status ativo/inativo)</li>
+ *   <li>Tabela de prescrições médicas ativas do prontuário</li>
+ *   <li>Tabela do histórico de vacinas aplicadas</li>
+ * </ul>
+ *
+ * <h3>Aba 2 — Percentual de Vacinação</h3>
+ * <p>O usuário informa o nome de uma vacina e o sistema calcula:</p>
+ * <ul>
+ *   <li>Percentual de cobertura vacinal dos residentes ativos (barra de progresso visual)</li>
+ *   <li>Números absolutos: total de ativos, vacinados e não vacinados</li>
+ * </ul>
+ *
+ * <h3>Aba 3 — Percentual de Incidentes</h3>
+ * <p>Carregada automaticamente ao ser selecionada, exibe:</p>
+ * <ul>
+ *   <li>Percentual de residentes ativos acometidos por ao menos um evento sentinela</li>
+ *   <li>Tabela de agrupamento de ocorrências por tipo de evento</li>
+ * </ul>
+ *
+ * @author José, Alisson, Esdras, Vini, Arthur
+ * @version 2.0
+ * @see RelatorioService
+ * @see RelatorioIndividualDTO
+ */
 @Component
 @NoArgsConstructor
 public class TelaRelatorios extends JFrame {
+
+    // --- Dependências Spring ---
 
     @Autowired
     private RelatorioService relatorioService;
@@ -37,29 +71,67 @@ public class TelaRelatorios extends JFrame {
     @Autowired
     private PanelsFactory panelsFactory;
 
+    /** Formatador de data para exibição no padrão brasileiro (dd/MM/yyyy). */
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    // Componentes Aba 1
+    // =====================================================================
+    // === Componentes da Aba 1 — Relatório Individual ====================
+    // =====================================================================
+
+    /** Campo mascarado para entrada do CPF na aba de relatório individual. */
     private JFormattedTextField txtCpfBusca;
+
+    /** Labels de exibição dos dados cadastrais do residente encontrado. */
     private JLabel lblNomeValor;
     private JLabel lblCpfValor;
     private JLabel lblNascValor;
     private JLabel lblStatusValor;
+
+    /** Modelo da tabela de prescrições médicas do relatório individual. */
     private DefaultTableModel modeloTabelaPrescricoes;
+
+    /** Modelo da tabela de vacinas do relatório individual. */
     private DefaultTableModel modeloTabelaVacinas;
 
-    // Componentes Aba 2
+    // =====================================================================
+    // === Componentes da Aba 2 — Percentual de Vacinação =================
+    // =====================================================================
+
+    /** Campo de texto para inserção do nome da vacina a ser calculada. */
     private JTextField txtNomeVacina;
+
+    /** Barra de progresso que exibe visualmente o percentual de cobertura vacinal. */
     private JProgressBar progressVacina;
+
+    /** Labels de estatísticas absolutas da vacinação. */
     private JLabel lblTotalAtivosVacina;
     private JLabel lblTotalVacinados;
     private JLabel lblTotalNaoVacinados;
 
-    // Componentes Aba 3
+    // =====================================================================
+    // === Componentes da Aba 3 — Percentual de Incidentes ================
+    // =====================================================================
+
+    /** Barra de progresso que exibe visualmente o percentual de residentes com incidentes. */
     private JProgressBar progressIncidentes;
+
+    /** Label com o total de residentes ativos e o percentual calculado. */
     private JLabel lblTotalAtivosIncidentes;
+
+    /** Modelo da tabela de agrupamento de incidentes por tipo de evento. */
     private DefaultTableModel modeloTabelaIncidentes;
 
+    // =====================================================================
+    // === Inicialização da UI ============================================
+    // =====================================================================
+
+    /**
+     * Inicializa e monta a estrutura completa da tela com suas três abas.
+     *
+     * <p>Chamado automaticamente pelo Spring após injeção das dependências.
+     * Registra listener no {@code JTabbedPane} para carregar os dados de
+     * incidentes automaticamente quando a aba 3 é selecionada.</p>
+     */
     @PostConstruct
     public void initUI() {
         setTitle("Recanto do Sagrado Coração - Central de Relatórios e Estatísticas");
@@ -69,26 +141,26 @@ public class TelaRelatorios extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Header e Footer
+        // Header e Footer padronizados do sistema
         JPanel headerPanel = panelsFactory.getHeaderPanel();
         add(headerPanel, BorderLayout.NORTH);
 
         JPanel footerPanel = panelsFactory.getFooterPanel();
         add(footerPanel, BorderLayout.SOUTH);
 
-        // Painel Central com as Abas
+        // Painel central com as abas de relatórios
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.setFont(new Font("Arial", Font.BOLD, 14));
         tabbedPane.setBackground(Cores.COR_FUNDO_CLARO);
         tabbedPane.setForeground(Cores.COR_RODAPE);
 
-        tabbedPane.addTab("Relatório Individual", createAbaIndividual());
-        tabbedPane.addTab("Percentual de Vacinação", createAbaVacinacao());
-        tabbedPane.addTab("Percentual de Incidentes", createAbaIncidentes());
+        tabbedPane.addTab("Relatório Individual",      createAbaIndividual());
+        tabbedPane.addTab("Percentual de Vacinação",   createAbaVacinacao());
+        tabbedPane.addTab("Percentual de Incidentes",  createAbaIncidentes());
 
         add(tabbedPane, BorderLayout.CENTER);
 
-        // Atualizar aba 3 automaticamente quando mostrada
+        // Carrega dados de incidentes automaticamente ao selecionar a aba 3 (índice 2)
         tabbedPane.addChangeListener(e -> {
             int selectedIndex = tabbedPane.getSelectedIndex();
             if (selectedIndex == 2) {
@@ -97,13 +169,28 @@ public class TelaRelatorios extends JFrame {
         });
     }
 
-    // --- ABA 1: RELATÓRIO INDIVIDUAL ---
+    // =====================================================================
+    // === ABA 1: RELATÓRIO INDIVIDUAL ====================================
+    // =====================================================================
+
+    /**
+     * Monta o painel completo da aba "Relatório Individual".
+     *
+     * <p>Composta por:</p>
+     * <ul>
+     *   <li>Barra de busca por CPF com botão "Gerar Relatório"</li>
+     *   <li>Ficha do residente (nome, CPF, nascimento, status)</li>
+     *   <li>Split vertical com tabela de prescrições (topo) e tabela de vacinas (baixo)</li>
+     * </ul>
+     *
+     * @return JPanel configurado e pronto para uso
+     */
     private JPanel createAbaIndividual() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBackground(Cores.COR_FUNDO_CLARO);
         panel.setBorder(new EmptyBorder(15, 20, 15, 20));
 
-        // Painel Busca
+        // --- Painel de Busca ---
         JPanel panelBusca = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 10));
         panelBusca.setBackground(Cores.COR_BRANCO);
         panelBusca.setBorder(BorderFactory.createLineBorder(Cores.COR_BORDA));
@@ -112,6 +199,7 @@ public class TelaRelatorios extends JFrame {
         lblCpf.setFont(new Font("Arial", Font.BOLD, 14));
         lblCpf.setForeground(Cores.COR_RODAPE);
 
+        // Campo CPF com máscara ###.###.###-##
         try {
             javax.swing.text.MaskFormatter mask = new javax.swing.text.MaskFormatter("###.###.###-##");
             mask.setPlaceholderCharacter('_');
@@ -135,7 +223,7 @@ public class TelaRelatorios extends JFrame {
         panelBusca.add(btnBuscar);
         panel.add(panelBusca, BorderLayout.NORTH);
 
-        // Painel de Dados e Tabelas
+        // --- Painel de Dados ---
         JPanel panelDados = new JPanel(new GridBagLayout());
         panelDados.setBackground(Cores.COR_FUNDO_CLARO);
         GridBagConstraints gbc = new GridBagConstraints();
@@ -143,7 +231,7 @@ public class TelaRelatorios extends JFrame {
         gbc.insets = new Insets(10, 0, 10, 0);
         gbc.weightx = 1.0;
 
-        // Ficha do Paciente
+        // Ficha do Residente (2 linhas x 4 colunas: label + valor)
         JPanel panelFicha = new JPanel(new GridLayout(2, 4, 15, 10));
         panelFicha.setBackground(Cores.COR_BRANCO);
         panelFicha.setBorder(BorderFactory.createTitledBorder(
@@ -174,12 +262,12 @@ public class TelaRelatorios extends JFrame {
         gbc.weighty = 0.2;
         panelDados.add(panelFicha, gbc);
 
-        // Prescrições e Vacinas
+        // Split vertical: tabela de prescrições (topo) e tabela de vacinas (baixo)
         JSplitPane splitTables = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         splitTables.setResizeWeight(0.5);
         splitTables.setBorder(null);
 
-        // Tabela Prescrições
+        // Tabela de Prescrições Médicas
         String[] colPresc = {"Medicamento", "Dosagem", "Instruções", "Data"};
         modeloTabelaPrescricoes = new DefaultTableModel(colPresc, 0) {
             @Override
@@ -192,7 +280,7 @@ public class TelaRelatorios extends JFrame {
         JScrollPane scrollPresc = new JScrollPane(tablePresc);
         scrollPresc.setBorder(BorderFactory.createTitledBorder("Prescrições Médicas Ativas"));
 
-        // Tabela Vacinas
+        // Tabela de Vacinas Aplicadas
         String[] colVac = {"Vacina", "Fabricante", "Lote", "Dosagem", "Data de Aplicação", "Responsável"};
         modeloTabelaVacinas = new DefaultTableModel(colVac, 0) {
             @Override
@@ -216,6 +304,12 @@ public class TelaRelatorios extends JFrame {
         return panel;
     }
 
+    /**
+     * Executa a busca e popula o relatório individual com os dados do paciente.
+     *
+     * <p>Valida o CPF, chama {@link RelatorioService#gerarRelatorioIndividual(String)} e
+     * preenche os labels de ficha e os modelos das tabelas de prescrições e vacinas.</p>
+     */
     private void buscarRelatorioIndividual() {
         String cpf = txtCpfBusca.getText();
         String cpfLimpo = CPFUtils.limparCPF(cpf);
@@ -228,12 +322,14 @@ public class TelaRelatorios extends JFrame {
             RelatorioIndividualDTO dto = relatorioService.gerarRelatorioIndividual(cpfLimpo);
             Paciente p = dto.getPaciente();
 
+            // Preenche ficha do residente
             lblNomeValor.setText(p.getNomeCompleto());
             lblCpfValor.setText(CPFUtils.formatarCPF(p.getCpf()));
             lblNascValor.setText(p.getDataNascimento().format(DATE_FORMATTER));
             lblStatusValor.setText(p.getAtivo() ? "ATIVO (Residente)" : "INATIVO");
             lblStatusValor.setForeground(p.getAtivo() ? Cores.COR_VERDE_ENFERMARIA : Cores.COR_VERMELHO_IDOSAS);
 
+            // Popula tabela de prescrições
             modeloTabelaPrescricoes.setRowCount(0);
             for (Prescricao pr : dto.getPrescricoes()) {
                 modeloTabelaPrescricoes.addRow(new Object[]{
@@ -244,6 +340,7 @@ public class TelaRelatorios extends JFrame {
                 });
             }
 
+            // Popula tabela de vacinas
             modeloTabelaVacinas.setRowCount(0);
             for (Vacina v : dto.getVacinas()) {
                 modeloTabelaVacinas.addRow(new Object[]{
@@ -261,12 +358,28 @@ public class TelaRelatorios extends JFrame {
         }
     }
 
-    // --- ABA 2: PERCENTUAL DE VACINAÇÃO ---
+    // =====================================================================
+    // === ABA 2: PERCENTUAL DE VACINAÇÃO ================================
+    // =====================================================================
+
+    /**
+     * Monta o painel da aba "Percentual de Vacinação".
+     *
+     * <p>Inclui:</p>
+     * <ul>
+     *   <li>Campo para nome da vacina + botão "Calcular Percentual"</li>
+     *   <li>{@link JProgressBar} colorido que representa a cobertura vacinal</li>
+     *   <li>Labels com os números absolutos (total, vacinados, não vacinados)</li>
+     * </ul>
+     *
+     * @return JPanel configurado e pronto para uso
+     */
     private JPanel createAbaVacinacao() {
         JPanel panel = new JPanel(new BorderLayout(15, 15));
         panel.setBackground(Cores.COR_FUNDO_CLARO);
         panel.setBorder(new EmptyBorder(30, 40, 30, 40));
 
+        // --- Topo: campo de pesquisa ---
         JPanel panelTopo = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 10));
         panelTopo.setBackground(Cores.COR_BRANCO);
         panelTopo.setBorder(BorderFactory.createLineBorder(Cores.COR_BORDA));
@@ -290,7 +403,7 @@ public class TelaRelatorios extends JFrame {
         panelTopo.add(btnCalcular);
         panel.add(panelTopo, BorderLayout.NORTH);
 
-        // Painel Estatísticas
+        // --- Centro: estatísticas visuais ---
         JPanel panelEstat = new JPanel(new GridBagLayout());
         panelEstat.setBackground(Cores.COR_BRANCO);
         panelEstat.setBorder(BorderFactory.createCompoundBorder(
@@ -303,12 +416,14 @@ public class TelaRelatorios extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
 
+        // Título da barra de progresso
         JLabel lblProgresso = new JLabel("Percentual de Cobertura Vacinal (Residentes Ativos):", SwingConstants.CENTER);
         lblProgresso.setFont(new Font("Arial", Font.BOLD, 18));
         lblProgresso.setForeground(Cores.COR_RODAPE);
         gbc.gridy = 0;
         panelEstat.add(lblProgresso, gbc);
 
+        // Barra de progresso verde (0-100%)
         progressVacina = new JProgressBar(0, 100);
         progressVacina.setStringPainted(true);
         progressVacina.setFont(new Font("Arial", Font.BOLD, 22));
@@ -318,6 +433,7 @@ public class TelaRelatorios extends JFrame {
         gbc.gridy = 1;
         panelEstat.add(progressVacina, gbc);
 
+        // Labels de detalhamento numérico
         JPanel panelDet = new JPanel(new GridLayout(3, 1, 10, 10));
         panelDet.setOpaque(false);
 
@@ -340,6 +456,12 @@ public class TelaRelatorios extends JFrame {
         return panel;
     }
 
+    /**
+     * Calcula e exibe o percentual de vacinação para a vacina informada pelo usuário.
+     *
+     * <p>Atualiza a barra de progresso e os labels com os valores calculados pelo
+     * {@link RelatorioService#calcularPercentualVacinacao(String)}.</p>
+     */
     private void calcularPercentualVacina() {
         String nomeVacina = txtNomeVacina.getText().trim();
         if (nomeVacina.isEmpty()) {
@@ -363,12 +485,27 @@ public class TelaRelatorios extends JFrame {
         }
     }
 
-    // --- ABA 3: PERCENTUAL DE INCIDENTES ---
+    // =====================================================================
+    // === ABA 3: PERCENTUAL DE INCIDENTES ================================
+    // =====================================================================
+
+    /**
+     * Monta o painel da aba "Percentual de Incidentes".
+     *
+     * <p>Inclui:</p>
+     * <ul>
+     *   <li>{@link JProgressBar} vermelho com o percentual de residentes acometidos</li>
+     *   <li>Tabela de agrupamento de eventos sentinela por tipo e quantidade</li>
+     * </ul>
+     *
+     * @return JPanel configurado e pronto para uso
+     */
     private JPanel createAbaIncidentes() {
         JPanel panel = new JPanel(new BorderLayout(15, 15));
         panel.setBackground(Cores.COR_FUNDO_CLARO);
         panel.setBorder(new EmptyBorder(25, 30, 25, 30));
 
+        // --- Painel de estatísticas visuais ---
         JPanel panelEstat = new JPanel(new GridBagLayout());
         panelEstat.setBackground(Cores.COR_BRANCO);
         panelEstat.setBorder(BorderFactory.createCompoundBorder(
@@ -387,6 +524,7 @@ public class TelaRelatorios extends JFrame {
         gbc.gridy = 0;
         panelEstat.add(lblProgresso, gbc);
 
+        // Barra de progresso vermelha (cor de alerta para incidentes)
         progressIncidentes = new JProgressBar(0, 100);
         progressIncidentes.setStringPainted(true);
         progressIncidentes.setFont(new Font("Arial", Font.BOLD, 22));
@@ -403,7 +541,7 @@ public class TelaRelatorios extends JFrame {
 
         panel.add(panelEstat, BorderLayout.NORTH);
 
-        // Tabela Agrupamento
+        // --- Tabela de detalhamento por tipo de evento sentinela ---
         String[] colunas = {"Tipo de Evento Sentinela", "Quantidade Ocorrências"};
         modeloTabelaIncidentes = new DefaultTableModel(colunas, 0) {
             @Override
@@ -424,18 +562,32 @@ public class TelaRelatorios extends JFrame {
         return panel;
     }
 
+    /**
+     * Carrega e exibe os dados de incidentes sentinela em tempo real.
+     *
+     * <p>Chamado automaticamente pelo {@code ChangeListener} do {@code JTabbedPane}
+     * sempre que a aba de incidentes é selecionada pelo usuário.
+     * Calcula o percentual via {@link RelatorioService#calcularPercentualIncidentes()}
+     * e agrupa os eventos por tipo via {@link RelatorioService#contarEventosPorTipo()}.</p>
+     *
+     * <p>O nome de cada tipo de evento é humanizado:
+     * {@code QUEDA_DA_CAMA} → {@code "Queda da cama"}.</p>
+     */
     private void carregarDadosIncidentes() {
         try {
             long totalAtivos = pacienteService.findPacientesByAtivo(true).size();
             double pct = relatorioService.calcularPercentualIncidentes();
 
             progressIncidentes.setValue((int) pct);
-            lblTotalAtivosIncidentes.setText(String.format("Total de Residentes Ativos: %d | Percentual Acometido por Eventos: %.1f%%", totalAtivos, pct));
+            lblTotalAtivosIncidentes.setText(String.format(
+                    "Total de Residentes Ativos: %d | Percentual Acometido por Eventos: %.1f%%", totalAtivos, pct));
 
+            // Popula a tabela de agrupamento por tipo de evento
             modeloTabelaIncidentes.setRowCount(0);
             Map<EventosOcorridos, Long> resumo = relatorioService.contarEventosPorTipo();
 
             for (Map.Entry<EventosOcorridos, Long> entry : resumo.entrySet()) {
+                // Humaniza o nome do enum: QUEDA_DA_CAMA → Queda da cama
                 String nomeFormatado = entry.getKey().name().replace("_", " ").toLowerCase();
                 nomeFormatado = nomeFormatado.substring(0, 1).toUpperCase() + nomeFormatado.substring(1);
                 modeloTabelaIncidentes.addRow(new Object[]{nomeFormatado, entry.getValue()});

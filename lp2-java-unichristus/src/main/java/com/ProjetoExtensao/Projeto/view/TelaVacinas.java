@@ -22,32 +22,79 @@ import java.awt.event.FocusEvent;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**
+ * Tela principal do módulo de Controle de Vacinas.
+ *
+ * <p>Exibe o histórico vacinal de um residente pesquisado pelo CPF e permite
+ * o acesso ao formulário de registro de novas vacinas ({@link TelaCadastroVacina}).</p>
+ *
+ * <h3>Fluxo de uso:</h3>
+ * <ol>
+ *   <li>O usuário digita o CPF do residente no campo de busca.</li>
+ *   <li>Ao clicar em "Pesquisar", o sistema busca o paciente no banco e
+ *       preenche a tabela com suas vacinas ordenadas da mais recente para a mais antiga.</li>
+ *   <li>O botão "Registrar Vacina" abre o formulário {@link TelaCadastroVacina}.</li>
+ *   <li>Ao salvar uma nova vacina, o método {@link #atualizarTabelaAposCadastro(Paciente)}
+ *       é chamado para atualizar a tabela automaticamente.</li>
+ * </ol>
+ *
+ * <p>Como todos os JFrames gerenciados pelo Spring neste sistema, esta tela usa
+ * {@code @PostConstruct} para inicializar a UI após a injeção de dependências.</p>
+ *
+ * @author José, Alisson, Esdras, Vini, Arthur
+ * @version 2.0
+ * @see VacinaService
+ * @see TelaCadastroVacina
+ */
 @Component
 @NoArgsConstructor
 public class TelaVacinas extends JFrame {
-    
+
+    // --- Dependências Spring injetadas automaticamente ---
+
     @Autowired
     private PacienteService pacienteService;
-    
+
     @Autowired
     private VacinaService vacinaService;
-    
+
     @Autowired
     private NavigationService navigationService;
-    
+
+    /** Formulário modal de cadastro de vacinas, aberto pelo botão "Registrar Vacina". */
     @Autowired
     private TelaCadastroVacina telaCadastroVacina;
-    
+
+    /** Fábrica de painéis reutilizáveis (Header e Footer padronizados da instituição). */
     @Autowired
     private PanelsFactory panelsFactory;
 
+    // --- Componentes da UI declarados como atributos de instância ---
+
+    /** Campo de texto para digitação do CPF do paciente a ser pesquisado. */
     private JTextField txtCpfBusca;
+
+    /** Tabela que exibe o histórico de vacinas do paciente selecionado. */
     private JTable tabelaVacinas;
+
+    /** Modelo de dados da tabela de vacinas, permite adicionar e remover linhas dinamicamente. */
     private DefaultTableModel modeloTabela;
+
+    /** Botão de refresh do header, limpa a pesquisa ao ser clicado. */
     private JButton refreshButton;
+
+    /** Paciente atualmente selecionado pela pesquisa de CPF. Nulo se nenhum foi pesquisado. */
     private Paciente pacienteAtual = null;
+
+    /** Formatador de data para exibição no padrão brasileiro (dd/MM/yyyy). */
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+    /**
+     * Inicializa e monta todos os componentes da tela.
+     *
+     * <p>Chamado automaticamente pelo Spring após a injeção de todas as dependências.
+     * Configura o layout principal, header, footer, painel de pesquisa e tabela de vacinas.</p>
+     */
     @PostConstruct
     public void initUI() {
         setTitle("Recanto do Sagrado Coração - Controle de Vacinas");
@@ -56,7 +103,8 @@ public class TelaVacinas extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
-        
+
+        // Limpa a pesquisa sempre que a tela é exibida novamente
         addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
             public void componentShown(java.awt.event.ComponentEvent e) {
@@ -67,19 +115,23 @@ public class TelaVacinas extends JFrame {
         Color azulEscuro = Cores.COR_RODAPE;
         Color cinzaTitulo = Cores.COR_LETRA_PAINEL;
 
+        // Header padronizado do sistema (logo + botões de administração)
         JPanel headerPanel = panelsFactory.getHeaderPanel();
         add(headerPanel, BorderLayout.NORTH);
         this.refreshButton = panelsFactory.getRefreshButton();
 
+        // Footer padronizado do sistema
         JPanel footerPanel = panelsFactory.getFooterPanel();
         add(footerPanel, BorderLayout.SOUTH);
 
+        // --- Painel Central ---
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setBackground(Cores.COR_FUNDO_CLARO);
         contentPanel.setBorder(new EmptyBorder(10, 20, 10, 20));
         add(contentPanel, BorderLayout.CENTER);
 
+        // --- Seção: Título e botão "Registrar Vacina" ---
         JPanel sectionHeader = new JPanel(new BorderLayout(10, 0));
         sectionHeader.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Cores.COR_LETRA_PAINEL));
         sectionHeader.setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
@@ -109,6 +161,7 @@ public class TelaVacinas extends JFrame {
         contentPanel.add(sectionHeader);
         contentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
+        // --- Seção: Painel de Pesquisa por CPF ---
         JPanel pesquisaPanel = new JPanel();
         pesquisaPanel.setLayout(new GridBagLayout());
         pesquisaPanel.setBackground(Cores.COR_FUNDO_CLARO);
@@ -164,8 +217,13 @@ public class TelaVacinas extends JFrame {
         contentPanel.add(pesquisaPanel);
         contentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
+        // --- Seção: Tabela de Vacinas ---
+        // Colunas que espelham os campos da entidade Vacina
         String[] colunas = {"ID", "Vacina", "Fabricante", "Lote", "Dosagem", "Data de Aplicação", "Responsável"};
         modeloTabela = new DefaultTableModel(colunas, 0) {
+            /**
+             * Impede a edição direta de células; dados são somente leitura na listagem.
+             */
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -185,6 +243,7 @@ public class TelaVacinas extends JFrame {
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         contentPanel.add(scrollPane);
 
+        // Botão de refresh do header: limpa pesquisa e tabela
         if (refreshButton != null) {
             refreshButton.addActionListener(e -> {
                 limparTabela();
@@ -197,6 +256,13 @@ public class TelaVacinas extends JFrame {
         pesquisarBtn.addActionListener(e -> buscarPaciente());
     }
 
+    /**
+     * Executa a busca de um paciente pelo CPF digitado no campo de pesquisa.
+     *
+     * <p>Valida o CPF antes de realizar a consulta. Em caso de sucesso, popula a tabela
+     * com o histórico de vacinas do paciente encontrado. Em caso de erro (paciente não
+     * encontrado ou CPF inválido), exibe um diálogo informativo ao usuário.</p>
+     */
     private void buscarPaciente() {
         String cpf = txtCpfBusca.getText();
         if (cpf.isEmpty() || cpf.equals("Digite o CPF do paciente")) {
@@ -225,6 +291,12 @@ public class TelaVacinas extends JFrame {
         }
     }
 
+    /**
+     * Recarrega a tabela com as vacinas do {@link #pacienteAtual}.
+     *
+     * <p>Consulta o serviço e popula o modelo da tabela com os registros ordenados por
+     * data de aplicação decrescente. Se nenhuma vacina for encontrada, exibe aviso.</p>
+     */
     public void atualizarTabelaVacinas() {
         limparTabela();
         if (pacienteAtual == null) return;
@@ -249,10 +321,22 @@ public class TelaVacinas extends JFrame {
         }
     }
 
+    /**
+     * Remove todas as linhas da tabela de vacinas.
+     */
     private void limparTabela() {
         modeloTabela.setRowCount(0);
     }
 
+    /**
+     * Adiciona comportamento de placeholder ao campo de texto informado.
+     *
+     * <p>O placeholder é exibido quando o campo está vazio e na cor definida em
+     * {@link Cores#COR_PLACEHOLDER}. Ao receber foco, o texto é removido automaticamente.</p>
+     *
+     * @param textField   campo de texto alvo
+     * @param placeholder texto de dica a ser exibido quando vazio
+     */
     private void addPlaceholder(JTextField textField, String placeholder) {
         textField.setText(placeholder);
         textField.setForeground(Cores.COR_PLACEHOLDER);
@@ -276,6 +360,10 @@ public class TelaVacinas extends JFrame {
         });
     }
 
+    /**
+     * Redefine o campo de pesquisa para o estado inicial (com placeholder) e limpa a tabela.
+     * Chamado automaticamente quando a tela se torna visível.
+     */
     private void limparCamposPesquisa() {
         if (txtCpfBusca != null) {
             txtCpfBusca.setText("");
@@ -284,11 +372,23 @@ public class TelaVacinas extends JFrame {
         limparTabela();
     }
 
+    /**
+     * Abre o formulário de cadastro de vacina ({@link TelaCadastroVacina}).
+     * Limpa os campos do formulário antes de exibi-lo para evitar dados residuais.
+     */
     private void abrirCadastroVacina() {
         telaCadastroVacina.limparCamposAoAbrir();
         telaCadastroVacina.setVisible(true);
     }
 
+    /**
+     * Atualiza a tabela após o cadastro bem-sucedido de uma vacina.
+     *
+     * <p>Chamado por {@link TelaCadastroVacina} para refletir automaticamente o novo
+     * registro sem que o usuário precise pesquisar novamente.</p>
+     *
+     * @param paciente paciente que acabou de ter uma vacina registrada
+     */
     public void atualizarTabelaAposCadastro(Paciente paciente) {
         if (paciente != null) {
             pacienteAtual = paciente;
