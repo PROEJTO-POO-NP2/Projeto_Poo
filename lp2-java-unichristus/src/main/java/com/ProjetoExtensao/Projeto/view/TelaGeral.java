@@ -104,9 +104,21 @@ public class TelaGeral extends JFrame {
             dispose();
         });
 
+        // Botão Família (Em desenvolvimento)
+        JButton btnFamilia = createDashboardButton("Família", "familia.png");
+        btnFamilia.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, "Módulo de Família em desenvolvimento.", "Informação", JOptionPane.INFORMATION_MESSAGE);
+        });
+
+        // Botão Documentos (Em desenvolvimento)
+        JButton btnDocumentos = createDashboardButton("Documentos", "documentos.png");
+        btnDocumentos.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, "Módulo de Documentos em desenvolvimento.", "Informação", JOptionPane.INFORMATION_MESSAGE);
+        });
+
         gridPanel.add(btnPacientes);
-        gridPanel.add(createDashboardButton("Família", "familia.png"));
-        gridPanel.add(createDashboardButton("Documentos", "documentos.png"));
+        gridPanel.add(btnFamilia);
+        gridPanel.add(btnDocumentos);
         gridPanel.add(btnEventos);
         
         JButton btnProntuarios = createDashboardButton("Prontuários", "prontuarios.png");
@@ -117,8 +129,22 @@ public class TelaGeral extends JFrame {
         gridPanel.add(btnProntuarios);
 
         gridPanel.add(btnConsultas);
-        gridPanel.add(createDashboardButton("Vacinas", "vacinas.png"));
-        gridPanel.add(createDashboardButton("Relatórios", "relatorios.png"));
+
+        // Botão Vacinas
+        JButton btnVacinas = createDashboardButton("Vacinas", "vacinas.png");
+        btnVacinas.addActionListener(e -> {
+            navigationService.abrirTelaVacinas();
+            dispose();
+        });
+        gridPanel.add(btnVacinas);
+
+        // Botão Relatórios
+        JButton btnRelatorios = createDashboardButton("Relatórios", "relatorios.png");
+        btnRelatorios.addActionListener(e -> {
+            navigationService.abrirTelaRelatorios();
+            dispose();
+        });
+        gridPanel.add(btnRelatorios);
 
         mainPanel.add(gridPanel, BorderLayout.CENTER);
 

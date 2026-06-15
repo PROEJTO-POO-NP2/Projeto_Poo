@@ -318,19 +318,27 @@ Esta arquitetura garante que, ao alterar o `DB_SCHEMA` no arquivo `.env`, o JDBC
 5. **Eventos Sentinelas**
    - Registro e listagem de eventos adversos (quedas, tentativas de suicídio, desidratação, etc.) ordenados por data.
 
-6. **Design (Novo)**
+6. **Controle de Vacinas (Novo)**
+   - Registro detalhado de vacinas aplicadas (Nome da Vacina, Fabricante, Lote, Dosagem, Data de Aplicação e Responsável Técnico).
+   - Histórico vacinal individual por residente.
+
+7. **Central de Relatórios e Estatísticas (Novo)**
+   - Geração de Relatório Individual integrado do residente (dados da ficha, histórico vacinal e prescrições médicas ativas).
+   - Cálculo gráfico de Percentual de Cobertura Vacinal de vacinas específicas.
+   - Cálculo gráfico de Percentual de Incidentes Sentinelas de residentes ativos acometidos.
+   - Quadro resumo de eventos sentinelas agrupados por tipo.
+
+8. **Design (Novo)**
    - A interface do sistema (Swing) foi totalmente reestilizada, contendo novos esquemas de cores, botões com hover, espaçamentos modernos, scrollbars adequadas e fontes de leitura facilitada.
 
 ---
 
 ## ❌ Próximos Passos (To-Do)
 
-* **Controle de Vacinas**: Modelo para registro de vacinas aplicadas, integrado ao Prontuário.
-* **Relatórios e Estatísticas**: Emissão de relatórios e cálculos de percentuais (vacinação, incidentes).
-* **Módulo de Família**: Cadastro de vínculos familiares e responsáveis legais.
-* **Armazenamento de Documentos**: Upload e vinculação de PDFs/Imagens aos pacientes.
+* **Módulo de Família (Em Desenvolvimento)**: Cadastro de vínculos familiares e responsáveis legais.
+* **Armazenamento de Documentos (Em Desenvolvimento)**: Upload e vinculação de PDFs/Imagens aos pacientes.
 
 ---
 
-*Última atualização: Maio de 2026*  
+*Última atualização: Junho de 2026*  
 *Desenvolvido para fins educacionais e de extensão acadêmica — Unichristus.*

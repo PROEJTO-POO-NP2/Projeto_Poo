@@ -50,6 +50,14 @@ public class NavigationService {
     @Autowired
     private TelaProntuarios telaProntuarios;
 
+    @Lazy
+    @Autowired
+    private TelaVacinas telaVacinas;
+
+    @Lazy
+    @Autowired
+    private TelaRelatorios telaRelatorios;
+
     /** Abre a tela de Login e a torna visível. */
     public void abrirTelaLogin(){
         telaLogin.setVisible(true);
@@ -99,5 +107,15 @@ public class NavigationService {
     /** Abre a tela de Prontuários Médicos. */
     public void abrirTelaProntuarios() {
         telaProntuarios.setVisible(true);
+    }
+
+    /** Abre a tela de Controle de Vacinas. */
+    public void abrirTelaVacinas() {
+        telaVacinas.setVisible(true);
+    }
+
+    /** Abre a tela de Relatórios e Estatísticas. */
+    public void abrirTelaRelatorios() {
+        telaRelatorios.setVisible(true);
     }
 }
