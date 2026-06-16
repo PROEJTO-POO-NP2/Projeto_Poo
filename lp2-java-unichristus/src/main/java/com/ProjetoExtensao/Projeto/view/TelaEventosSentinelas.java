@@ -105,10 +105,8 @@ public class TelaEventosSentinelas extends JFrame {
 
         JButton novoEventoBtn = new JButton("Novo Evento");
         novoEventoBtn.setFont(new Font("Arial", Font.BOLD, 16));
-        novoEventoBtn.setBackground(azulEscuro);
-        novoEventoBtn.setForeground(Color.WHITE);
+        Cores.aplicarEstiloBotao(novoEventoBtn, azulEscuro, Color.WHITE);
         novoEventoBtn.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
-        novoEventoBtn.setFocusPainted(false);
         novoEventoBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         sectionButtonsPanel.add(novoEventoBtn);
 
@@ -165,9 +163,7 @@ public class TelaEventosSentinelas extends JFrame {
         gbc.weightx = 0.0;
         JButton pesquisarBtn = new JButton("Pesquisar");
         pesquisarBtn.setFont(new Font("Arial", Font.BOLD, 14));
-        pesquisarBtn.setBackground(azulEscuro);
-        pesquisarBtn.setForeground(Color.WHITE);
-        pesquisarBtn.setFocusPainted(false);
+        Cores.aplicarEstiloBotao(pesquisarBtn, azulEscuro, Color.WHITE);
         pesquisarBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         pesquisarBtn.setBorder(new EmptyBorder(8, 15, 8, 15));
         pesquisaPanel.add(pesquisarBtn, gbc);

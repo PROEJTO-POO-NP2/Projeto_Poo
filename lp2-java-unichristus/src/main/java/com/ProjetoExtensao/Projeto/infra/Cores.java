@@ -52,4 +52,24 @@ public class Cores {
 
     /** Azul info para mensagens informativas. */
     public static final Color COR_AZUL_INFO = new Color(0x5BC0DE);
+
+    /**
+     * Aplica o estilo padrão em um JButton, garantindo que a cor de fundo
+     * seja respeitada independente do Look and Feel do sistema operacional.
+     *
+     * <p>Este método resolve o bug de botões brancos em Linux/macOS
+     * ao forçar {@code setOpaque(true)} e {@code setContentAreaFilled(true)}.</p>
+     *
+     * @param btn        o botão a ser estilizado
+     * @param background cor de fundo desejada
+     * @param foreground cor do texto desejada
+     */
+    public static void aplicarEstiloBotao(javax.swing.JButton btn, Color background, Color foreground) {
+        btn.setBackground(background);
+        btn.setForeground(foreground);
+        btn.setOpaque(true);
+        btn.setContentAreaFilled(true);
+        btn.setBorderPainted(true);
+        btn.setFocusPainted(false);
+    }
 }

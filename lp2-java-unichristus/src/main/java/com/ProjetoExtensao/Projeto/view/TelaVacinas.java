@@ -148,10 +148,8 @@ public class TelaVacinas extends JFrame {
 
         JButton novaVacinaBtn = new JButton("Registrar Vacina");
         novaVacinaBtn.setFont(new Font("Arial", Font.BOLD, 16));
-        novaVacinaBtn.setBackground(azulEscuro);
-        novaVacinaBtn.setForeground(Color.WHITE);
+        Cores.aplicarEstiloBotao(novaVacinaBtn, azulEscuro, Color.WHITE);
         novaVacinaBtn.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
-        novaVacinaBtn.setFocusPainted(false);
         novaVacinaBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         sectionButtonsPanel.add(novaVacinaBtn);
 
@@ -207,9 +205,7 @@ public class TelaVacinas extends JFrame {
         gbc.weightx = 0.0;
         JButton pesquisarBtn = new JButton("Pesquisar");
         pesquisarBtn.setFont(new Font("Arial", Font.BOLD, 14));
-        pesquisarBtn.setBackground(azulEscuro);
-        pesquisarBtn.setForeground(Color.WHITE);
-        pesquisarBtn.setFocusPainted(false);
+        Cores.aplicarEstiloBotao(pesquisarBtn, azulEscuro, Color.WHITE);
         pesquisarBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         pesquisarBtn.setBorder(new EmptyBorder(8, 15, 8, 15));
         pesquisaPanel.add(pesquisarBtn, gbc);

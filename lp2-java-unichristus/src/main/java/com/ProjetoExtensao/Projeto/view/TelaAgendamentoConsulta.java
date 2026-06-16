@@ -399,8 +399,7 @@ public class TelaAgendamentoConsulta extends JFrame {
         // Adiciona o botão Agendar ao formPanel com GridBagLayout
         JButton agendarBtn = new JButton("Agendar");
         agendarBtn.setFont(new Font("Arial", Font.BOLD, 20));
-        agendarBtn.setBackground(Cores.COR_RODAPE);
-        agendarBtn.setForeground(Color.WHITE);
+        Cores.aplicarEstiloBotao(agendarBtn, Cores.COR_RODAPE, Color.WHITE);
         gbc.gridx = 0;
         gbc.gridy = 14;
         gbc.gridwidth = 2;

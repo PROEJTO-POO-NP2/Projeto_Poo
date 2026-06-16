@@ -26,6 +26,17 @@ public class ProjetoApplication {
 	public static void main(String[] args) {
 		System.setProperty("java.awt.headless", "false");
 
+		// Forçar Look and Feel cross-platform para garantir que setBackground() funcione
+		// em todos os sistemas operacionais (Windows, Linux, macOS).
+		// Sem isso, botões ficam brancos em alguns JDKs/sistemas.
+		try {
+			javax.swing.UIManager.setLookAndFeel(
+				javax.swing.UIManager.getCrossPlatformLookAndFeelClassName()
+			);
+		} catch (Exception e) {
+			System.err.println("[AVISO] Não foi possível configurar o Look and Feel: " + e.getMessage());
+		}
+
 		// Lógica robusta para carregar o .env independente de onde a aplicação foi iniciada (raiz ou subpasta)
 		java.io.File envLocal = new java.io.File(".env");
 		java.io.File envSubpasta = new java.io.File("lp2-java-unichristus/.env");

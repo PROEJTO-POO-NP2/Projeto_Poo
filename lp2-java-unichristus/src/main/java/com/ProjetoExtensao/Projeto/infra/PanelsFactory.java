@@ -74,9 +74,7 @@ public class PanelsFactory {
         refreshButton = new JButton("Atualizar", iconManager.createScaledIcon("/images/refresh.png", 20, 20));
 
         for (JButton btn : new JButton[]{adminButton, exitButton, refreshButton}) {
-            btn.setBackground(new Color(Cores.COR_RODAPE.getRGB()));
-            btn.setForeground(Color.WHITE);
-            btn.setFocusPainted(false);
+            Cores.aplicarEstiloBotao(btn, Cores.COR_RODAPE, Color.WHITE);
             btn.setBorder(new EmptyBorder(8, 12, 8, 12));
             if (btn == refreshButton) {
                 btn.setBorder(new EmptyBorder(8, 8, 8, 8));
@@ -135,9 +133,6 @@ public class PanelsFactory {
     public JPanel getFooterPanel() {
         JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         footerPanel.setBackground(Cores.COR_RODAPE);
-        // Sem chamada a getWidth() de JFrame, defino um tamanho padrão genérico se necessário, 
-        // ou omito setPreferredSize se o layout tratar. O layout FlowLayout vai tratar bem o height.
-        footerPanel.setPreferredSize(new Dimension(800, 400));
         footerPanel.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, 40));
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");

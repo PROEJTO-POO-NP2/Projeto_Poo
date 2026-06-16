@@ -124,10 +124,8 @@ public class TelaConsultas extends JFrame {
 
         JButton novaConsultaBtn = new JButton("Nova Consulta");
         novaConsultaBtn.setFont(new Font("Arial", Font.BOLD, 16));
-        novaConsultaBtn.setBackground(azulEscuro);
-        novaConsultaBtn.setForeground(Color.WHITE);
+        Cores.aplicarEstiloBotao(novaConsultaBtn, azulEscuro, Color.WHITE);
         novaConsultaBtn.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
-        novaConsultaBtn.setFocusPainted(false);
         sectionButtonsPanel.add(novaConsultaBtn);
 
         // Ação do botão "Nova Consulta"
@@ -193,9 +191,7 @@ public class TelaConsultas extends JFrame {
         gbc.weightx = 0.0;
         JButton pesquisarBtn = new JButton("Pesquisar");
         pesquisarBtn.setFont(new Font("Arial", Font.BOLD, 14));
-        pesquisarBtn.setBackground(azulEscuro);
-        pesquisarBtn.setForeground(Color.WHITE);
-        pesquisarBtn.setFocusPainted(false);
+        Cores.aplicarEstiloBotao(pesquisarBtn, azulEscuro, Color.WHITE);
         pesquisarBtn.setBorder(new EmptyBorder(8, 15, 8, 15));
         pesquisaPanel.add(pesquisarBtn, gbc);
 

@@ -17,7 +17,6 @@ import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.text.ParseException;
-import java.text.ParseException;
 import java.time.LocalDate;
 
 /**
@@ -85,9 +84,7 @@ public class TelaCadastroEventoSentinela extends JFrame {
         txtCpf = createFormattedTextField("###.###.###-##", fonteCampo);
         JButton btnBuscarCpf = new JButton("Buscar");
         btnBuscarCpf.setFont(new Font("Segoe UI", Font.BOLD, 11));
-        btnBuscarCpf.setBackground(Cores.COR_RODAPE);
-        btnBuscarCpf.setForeground(Color.WHITE);
-        btnBuscarCpf.setFocusPainted(false);
+        Cores.aplicarEstiloBotao(btnBuscarCpf, Cores.COR_RODAPE, Color.WHITE);
         btnBuscarCpf.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnBuscarCpf.addActionListener(e -> buscarPacientePorCpf());
         
@@ -199,9 +196,7 @@ public class TelaCadastroEventoSentinela extends JFrame {
 
     private JButton createButton(String text) {
         JButton btn = new JButton(text);
-        btn.setBackground(Cores.COR_RODAPE);
-        btn.setForeground(Color.WHITE);
-        btn.setFocusPainted(false);
+        Cores.aplicarEstiloBotao(btn, Cores.COR_RODAPE, Color.WHITE);
         btn.setFont(new Font("Segoe UI", Font.BOLD, 13));
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         return btn;

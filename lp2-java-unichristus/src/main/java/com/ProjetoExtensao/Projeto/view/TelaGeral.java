@@ -181,6 +181,9 @@ public class TelaGeral extends JFrame {
         button.setFont(new Font("Arial", Font.PLAIN, 14));
         button.setForeground(Cores.COR_LETRA_PAINEL);
         button.setBackground(Color.WHITE);
+        button.setOpaque(true);
+        button.setContentAreaFilled(true);
+        button.setBorderPainted(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(0xDDDDDD)));
         button.setFocusPainted(false);
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));

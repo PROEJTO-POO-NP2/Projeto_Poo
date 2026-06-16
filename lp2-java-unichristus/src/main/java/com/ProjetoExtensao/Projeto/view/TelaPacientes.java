@@ -252,9 +252,7 @@ public class TelaPacientes extends JFrame {
     }
 
     private void estilizarBotao(JButton botao) {
-        botao.setBackground(Cores.COR_RODAPE);
-        botao.setForeground(Color.WHITE);
-        botao.setFocusPainted(false);
+        Cores.aplicarEstiloBotao(botao, Cores.COR_RODAPE, Color.WHITE);
         botao.setFont(new Font("Arial", Font.BOLD, 13));
         botao.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20)); // padding interno normal
         botao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

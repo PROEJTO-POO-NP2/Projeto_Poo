@@ -134,15 +134,13 @@ public class TelaLogin extends JFrame {
 
         JButton btnLogar = new JButton("Logar");
         btnLogar.setPreferredSize(new Dimension(100, 30));
-        btnLogar.setBackground(Cores.COR_RODAPE);
-        btnLogar.setForeground(Color.WHITE);
+        Cores.aplicarEstiloBotao(btnLogar, Cores.COR_RODAPE, Color.WHITE);
         btnLogar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnPanel.add(btnLogar);
 
         JButton btnCancelar = new JButton("Cancelar");
         btnCancelar.setPreferredSize(new Dimension(100, 30));
-        btnCancelar.setBackground(Cores.COR_RODAPE);
-        btnCancelar.setForeground(Color.WHITE);
+        Cores.aplicarEstiloBotao(btnCancelar, Cores.COR_RODAPE, Color.WHITE);
         btnCancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnPanel.add(btnCancelar);
 

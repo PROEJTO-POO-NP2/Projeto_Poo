@@ -15,7 +15,6 @@ import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 /**
@@ -182,9 +181,7 @@ public class TelaCadastroPacientes extends JFrame {
 
     private JButton createButton(String text) {
         JButton btn = new JButton(text);
-        btn.setBackground(Cores.COR_RODAPE);
-        btn.setForeground(Color.WHITE);
-        btn.setFocusPainted(false);
+        Cores.aplicarEstiloBotao(btn, Cores.COR_RODAPE, Color.WHITE);
         btn.setFont(new Font("Segoe UI", Font.BOLD, 13));
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         return btn;
